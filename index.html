@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="src/core.js" type="text/javascript"></script>
+	<script src="src/processor.js" type="text/javascript"></script>
+	<script src="src/display.js" type="text/javascript"></script>
+	<script src="src/instructions.js" type="text/javascript"></script>
+	<script src="src/logger.js" type="text/javascript"></script>
+	<script src="src/utils.js" type="text/javascript"></script>
+	<script src="src/editor.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body onload = "core.createProcessor('',1);core.createDisplay(1,core.defualtDisplaySize)">
+	<div class = "topbar-container">
+		<label onclick = "core.createProcessor('',parseInt(prompt('Processor id')))" style="font-size:25px;color:#bbb;left: 15px;position: absolute;">P</label>
+		<label onclick = "core.createDisplay(parseInt(prompt('Screen id')),parseInt(prompt('Screen size')))" style="font-size:25px;color:#bbb;left: 40px;position: absolute;">S</label>
+	</div>
+	<div class = "main-container">
+		<div id = "devices-container" class = "devices-container">
+
+		</div>
+		<div id = "processors-and-code-container" class = "processors-and-code-container">
+			<div id = "processors-container" class="processors-container">
+				
+			</div>
+			<div  class = "code-editor-container">
+				<div class = "editor-top-bar-container">
+					<img id = "play-pause" onclick="editor.toggleProcessor()" class = "editor-control-btn" src="resources/play.svg"><img>
+					<img id = "next" onclick="editor.stepInstruction()" class = "editor-control-btn" src="resources/next.svg"><img>
+					<img id = "edit" onclick="editor.toggleEditMode()" class = "editor-control-btn" src="resources/edit.svg"><img>
+				</div>
+				<div id = "code-container" class="code-container">
+					
+				</div>
+				<div id = "debug-container" class="debug-container">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
