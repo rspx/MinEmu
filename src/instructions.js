@@ -84,7 +84,7 @@ class InstructionHandler{
                 break
             case "line":
                 //draw line xstart ystart xend yend 0 0
-
+                break
             case "clear":
                 processor.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize,new Color(parseArgument(args[1],processor),parseArgument(args[2],processor),parseArgument(args[3],processor),parseArgument(args[4],processor)))
                 break
