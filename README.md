@@ -7,10 +7,10 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 - Execution control
 
 ### FAQ
-Press "P" to create processor.
-Press "S" to create screen.
-Left click on processor to open it in editor.
-Right click on processor or screen to delete it.
+- Press "P" to create processor.
+- Press "S" to create screen.
+- Left click on processor to open it in editor.
+- Right click on processor or screen to delete it.
 
 ### Suported instructions
 - `print` - full support
