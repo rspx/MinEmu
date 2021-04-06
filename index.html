@@ -8,9 +8,10 @@
 	<script src="src/logger.js" type="text/javascript"></script>
 	<script src="src/utils.js" type="text/javascript"></script>
 	<script src="src/editor.js" type="text/javascript"></script>
+	<script src="src/fs.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="styles.css">
 </head>
-<body onload = "core.createProcessor('',1);core.createDisplay(1,core.defualtDisplaySize)">
+<body onload = "fs.load()">
 	<div class = "topbar-container">
 		<label onclick = "core.createProcessor('',parseInt(prompt('Processor id')))" style="font-size:25px;color:#bbb;left: 15px;position: absolute;">P</label>
 		<label onclick = "core.createDisplay(parseInt(prompt('Screen id')),parseInt(prompt('Screen size')))" style="font-size:25px;color:#bbb;left: 40px;position: absolute;">S</label>

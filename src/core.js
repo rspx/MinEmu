@@ -13,6 +13,38 @@ createProcessorBtn = (id) =>{
     container.addEventListener("click",(e)=>{
         editor.selectProcessor(id)
     })
+    container.addEventListener("contextmenu",(e)=>{
+        //To be improved!
+        e.preventDefault()
+        if (!confirm(`Are you sure you want to delete processor ${id} ?`)){
+            return
+        }
+        core.removeProcessor(id)
+    })
+    return container
+}
+createCanvas = (size,id) =>{
+    container = document.createElement("div")
+    container.className = "display-container"
+    label = document.createElement("label")
+    label.className = "device-name"
+    label.innerText = "display"+id
+    canvas = document.createElement("canvas")
+    canvas.width = size
+    canvas.height = size
+    container.appendChild(label)
+    container.appendChild(document.createElement("br"))
+    container.appendChild(canvas)
+    document.getElementById("devices-container").appendChild(container)
+    container.addEventListener("contextmenu",(e)=>{
+        //To be improved!
+        e.preventDefault()
+        if (!confirm(`Are you sure you want to delete display ${id} ?`)){
+            return
+        }
+        core.removeDisplay(id)
+    })
+    return container
 }
 runFunction = () =>{
     core.processors.forEach(processor => {
@@ -45,11 +77,13 @@ class core {
         return true
     }
     static createDisplay = (id,size) =>{
+        size = size==80?size:core.defualtDisplaySize
         if (this.getDisplay(id)) {
             logger.warn("Trying to create display with taken id") 
             return
         }
-        this.displays.push(new Display(size,id))
+        let displayElement = createCanvas(size,id)
+        this.displays.push(new Display(size,id,displayElement))
     }
     static stopThread = () =>{
         clearTimeout(this.thread_id)
@@ -63,8 +97,29 @@ class core {
             this.getProcessor(id).instructions = instructions.split("\n")
             return
         }
-        createProcessorBtn(id)
-        this.processors.push(new Processor(instructions.split("\n"),id,speed))
+        let btn = createProcessorBtn(id)
+        this.processors.push(new Processor(instructions.split("\n"),id,btn,speed))
+    }
+    static removeProcessor = (id) =>{
+        core.processors = core.processors.filter(processor=>{
+            if (processor.id == id){
+                if (editor.curProcessor == id){
+                    editor.selectProcessor(false)
+                }
+                processor.btn.remove()
+                return false
+            }
+            return true
+        })
+    }
+    static removeDisplay = (id) =>{
+        core.displays = core.displays.filter(display=>{
+            if (display.id == id){
+                display.displayElement.remove()
+                return false
+            }
+            return true
+        })
     }
     static getDisplay = (id) =>{
         for (let i = 0; i < this.displays.length; i++) {

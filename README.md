@@ -1,10 +1,16 @@
 # Min emu
-Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic emulator. At it's current state it can only be used for very simple programs without any inpus.
+Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic emulator. At it's current state it can only be used for very simple programs without any inpus. You can use it without downloading on official [page](https://rspx.github.io/MinEmu/).
 ### Feature
 - Unlimited number of processors
 - Unlimited number of displays
 - Debug info
 - Execution control
+
+### FAQ
+Press "P" to create processor.
+Press "S" to create screen.
+Left click on processor to open it in editor.
+Right click on processor or screen to delete it.
 
 ### Suported instructions
 - `print` - full support

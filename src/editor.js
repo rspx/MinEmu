@@ -3,6 +3,11 @@ class editor{
     static editmode = false
     static selectProcessor = (id) =>{
         this.curProcessor = id
+        if (!id){
+            document.getElementById("code-container").innerHTML = ""
+            document.getElementById("debug-container").innerHTML = ""
+            return
+        }
         this.updateBtns()
         this.displayCode()
         this.displayCurInstruction(core.getProcessor(this.curProcessor).curInstrucion)
