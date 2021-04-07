@@ -43,6 +43,8 @@ header button{
     align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
+    flex-wrap: wrap;
+
 }
 .display{
     padding: 1em;
@@ -58,6 +60,7 @@ header button{
     align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
+    flex-wrap: wrap;
 }
 .processor{
     padding: 0.5em;
