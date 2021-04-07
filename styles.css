@@ -42,7 +42,6 @@ header button{
     display: flex;
     align-items: flex-start;
     justify-content: center;
-
     overflow-y: auto;
 }
 .display{
@@ -59,14 +58,18 @@ header button{
     align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
-
 }
 .processor{
-    padding: 1em;
+    padding: 0.5em;
+    margin: 1em;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     gap: 0.6em;
+    border-radius: 10px;
+}
+.processor.selected{
+    background-color: rgba(255, 255, 255, 0.1);
 }
 #editor{
     grid-area: editor;

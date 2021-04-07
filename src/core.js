@@ -1,15 +1,20 @@
 createProcessorBtn = (id) =>{
-    container = document.createElement("div")
+    const container = document.createElement("div")
     container.className = "processor"
-    label = document.createElement("label")
+    const label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "processor"+id
-    img = document.createElement("img")
+    const img = document.createElement("img")
     img.src = "resources/logic-processor.png"
     container.appendChild(label)
     container.appendChild(img)
     document.getElementById("processors").appendChild(container)
-    container.addEventListener("click",(e)=>{
+    container.addEventListener("click", (e) => {
+        const { children } = document.getElementById("processors")
+        for (const child of children) {
+            child.classList.remove("selected")
+        }
+        container.classList.add("selected")
         editor.selectProcessor(id)
     })
     container.addEventListener("contextmenu",(e)=>{
