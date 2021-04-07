@@ -4,8 +4,8 @@ class editor{
     static selectProcessor = (id) =>{
         this.curProcessor = id
         if (!id){
-            document.getElementById("code-container").innerHTML = ""
-            document.getElementById("debug-container").innerHTML = ""
+            document.getElementById("code").innerHTML = ""
+            document.getElementById("debug").innerHTML = ""
             return
         }
         this.updateBtns()
@@ -34,11 +34,10 @@ class editor{
         instruction.innerText = text
         container.appendChild(linenumber)
         container.appendChild(instruction)
-        document.getElementById("code-container").appendChild(container)
-        document.getElementById("code-container").appendChild(document.createElement("br"))
+        document.getElementById("code").appendChild(container)
     }
     static displayCode = () =>{
-        document.getElementById("code-container").innerHTML = ""
+        document.getElementById("code").innerHTML = ""
         for (let i = 0; i <  core.getProcessor(this.curProcessor).instructions.length; i++) {
             this.createLine(i,core.getProcessor(this.curProcessor).instructions[i])
         }
@@ -50,10 +49,10 @@ class editor{
         let variable = document.createElement("label")
         variable.className = "varible-text"
         variable.innerHTML = `${name}:${value}`
-        document.getElementById("debug-container").appendChild(variable)
+        document.getElementById("debug").appendChild(variable)
     }
     static displayVariables = () =>{
-        document.getElementById("debug-container").innerHTML = ""
+        document.getElementById("debug").innerHTML = ""
         for (const variable in core.getProcessor(this.curProcessor).variables) {
             this.createVariable(variable,core.getProcessor(this.curProcessor).variables[variable])
           }
@@ -73,7 +72,7 @@ class editor{
             return
         }
         this.editmode = true
-        document.getElementById("code-container").innerHTML = ""
+        document.getElementById("code").innerHTML = ""
         let input = document.createElement("textarea")
         input.className = "code-input"
         input.id = "code-input"
@@ -84,13 +83,13 @@ class editor{
             if (e.key !== "Escape") return
             editor.toggleEditMode()
         })
-        document.getElementById("code-container").appendChild(input)
+        document.getElementById("code").appendChild(input)
         document.querySelector("#code-input").focus()
     }
     static displayCurInstruction = (index) =>{
-        var instructions_dirty = document.getElementById("code-container").children
+        var instructions_dirty = document.getElementById("code").children
         var instructions_clean = []
-        for (var i = 0; i < instructions_dirty.length; i += 2) {
+        for (var i = 0; i < instructions_dirty.length; i++) {
             instructions_clean.push(instructions_dirty[i])
         }
         for (let i = 0; i < instructions_clean.length; i++) {

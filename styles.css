@@ -1,3 +1,104 @@
+*{
+    font-family: 'Nunito';
+}
+body{
+    background-color: #232323;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 4fr 4fr 3fr;
+    grid-template-rows: 3em 1fr 1fr 1fr;
+    height: 100vh;
+    grid-template-areas: 
+    'topbar topbar topbar'
+    'devices processors editor'
+    'devices processors editor'
+    'devices processors editor';
+}
+
+header{
+    grid-area: topbar;
+    height: 100%;
+    z-index: 500;
+    width: 100%;
+    height: 100%;
+    background-color: #353535;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+#devices{
+    grid-area: devices;
+    border: 1px solid #353535;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    overflow-y: auto;
+}
+.display{
+    padding: 1em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6em;
+}
+#processors{
+    grid-area: processors;
+    border: 1px solid #353535;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+
+}
+.processor{
+    padding: 1em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6em;
+}
+#editor{
+    grid-area: editor;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #353535;
+}
+.editor_tools{
+    width: 100%;
+    align-items: center;
+    /* justify-content: right; */
+    height: 5%;
+    background-color: #353535;
+    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+}
+.editor_tools .btn{
+    width: 2em;
+    height: 90%;
+}
+#code{
+    flex: 2;
+    border-bottom: 2px solid #353535;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#code textarea{
+    flex: 1;
+    resize: none;
+    outline: none;
+    background: transparent;
+    color: #bbb;
+}
+#debug{
+    flex: 1;
+}
+canvas {
+    transform: scaleY(-1);
+    background-color: #565666;
+    border: 4px ridge #A5AEB5;
+}
+
 body{
     background-color: #232323;
     margin: 0;

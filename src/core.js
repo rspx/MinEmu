@@ -1,15 +1,14 @@
 createProcessorBtn = (id) =>{
     container = document.createElement("div")
-    container.className = "processor-container"
+    container.className = "processor"
     label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "processor"+id
     img = document.createElement("img")
     img.src = "resources/logic-processor.png"
     container.appendChild(label)
-    container.appendChild(document.createElement("br"))
     container.appendChild(img)
-    document.getElementById("processors-container").appendChild(container)
+    document.getElementById("processors").appendChild(container)
     container.addEventListener("click",(e)=>{
         editor.selectProcessor(id)
     })
@@ -25,7 +24,7 @@ createProcessorBtn = (id) =>{
 }
 createCanvas = (size,id) =>{
     container = document.createElement("div")
-    container.className = "display-container"
+    container.className = "display"
     label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "display"+id
@@ -33,9 +32,8 @@ createCanvas = (size,id) =>{
     canvas.width = size
     canvas.height = size
     container.appendChild(label)
-    container.appendChild(document.createElement("br"))
     container.appendChild(canvas)
-    document.getElementById("devices-container").appendChild(container)
+    document.getElementById("devices").appendChild(container)
     container.addEventListener("contextmenu",(e)=>{
         //To be improved!
         e.preventDefault()
