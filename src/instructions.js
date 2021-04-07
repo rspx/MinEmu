@@ -1,7 +1,7 @@
-getLastCharacter = (text) =>{
+const getLastCharacter = (text) =>{
     return text[text.length-1]
 }
-parseArgument = (text,processor) =>{
+const parseArgument = (text,processor) =>{
     if (typeof(text) == "undefined")return null
     //Parse devices variable
     for (let i = 0; i < core.suportedDevices.length; i++) {

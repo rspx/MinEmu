@@ -1,4 +1,4 @@
-createProcessorBtn = (id) =>{
+const createProcessorBtn = (id) =>{
     const container = document.createElement("div")
     container.className = "processor"
     const label = document.createElement("label")
@@ -27,13 +27,13 @@ createProcessorBtn = (id) =>{
     })
     return container
 }
-createCanvas = (size,id) =>{
-    container = document.createElement("div")
+const createCanvas = (size,id) =>{
+    const container = document.createElement("div")
     container.className = "display"
-    label = document.createElement("label")
+    const label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "display"+id
-    canvas = document.createElement("canvas")
+    const canvas = document.createElement("canvas")
     canvas.width = size
     canvas.height = size
     container.appendChild(label)
@@ -49,7 +49,7 @@ createCanvas = (size,id) =>{
     })
     return container
 }
-runFunction = () =>{
+const runFunction = () =>{
     core.processors.forEach(processor => {
         if (processor.running) processor.tick()
     });

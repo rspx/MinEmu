@@ -1,4 +1,4 @@
-getRandInt = (min, max) => {
+const getRandInt = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 }
 window.addEventListener('beforeunload', (e) => {
