@@ -10,11 +10,6 @@ const createProcessorBtn = (id) =>{
     container.appendChild(img)
     document.getElementById("processors").appendChild(container)
     container.addEventListener("click", (e) => {
-        const { children } = document.getElementById("processors")
-        for (const child of children) {
-            child.classList.remove("selected")
-        }
-        container.classList.add("selected")
         editor.selectProcessor(id)
     })
     container.addEventListener("contextmenu",(e)=>{

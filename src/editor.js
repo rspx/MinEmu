@@ -2,16 +2,27 @@ class editor{
     static curProcessor = false
     static editmode = false
     static selectProcessor = (id) =>{
-        this.curProcessor = id
+        if (this.curProcessor){
+            this.unhighlightProcessor(this.curProcessor)
+        }
         if (!id){
+            this.curProcessor = false
             document.getElementById("code").innerHTML = ""
             document.getElementById("debug").innerHTML = ""
             return
         }
+        this.curProcessor = id
+        this.highlightProcessor(id)
         this.updateBtns()
         this.displayCode()
         this.displayCurInstruction(core.getProcessor(this.curProcessor).curInstrucion)
         this.displayVariables()
+    }
+    static highlightProcessor = (id)=>{
+        core.getProcessor(id).btn.classList.add("selected")
+    }
+    static unhighlightProcessor = (id)=>{
+        core.getProcessor(id).btn.classList.remove("selected")
     }
     static updateBtns = () =>{
         if (this.curProcessor === false) return
