@@ -1,11 +1,12 @@
 class Processor{
-    constructor(instructions,id, speed){
+    constructor(instructions,id,btn, speed){
         this.variables = {}
         this.id = id
         this.running = false
         this.instructions = instructions
         this.speed = speed
         this.curInstrucion = 0
+        this.btn = btn
         this.color = new Color(0,0,0,255)
         this.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize)
         this.printBuffer = null
@@ -29,8 +30,5 @@ class Processor{
         this.executeInstruction(instruction.shift(),instruction)
         this.curInstrucion++
         return true
-    }
-    getThis = () =>{
-        return this
     }
 }

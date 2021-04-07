@@ -1,20 +1,74 @@
-createProcessorBtn = (id) =>{
-    container = document.createElement("div")
-    container.className = "processor-container"
-    label = document.createElement("label")
+const createProcessorBtn = (id) =>{
+    const container = document.createElement("div")
+    container.className = "processor"
+    const label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "processor"+id
-    img = document.createElement("img")
+    const img = document.createElement("img")
     img.src = "resources/logic-processor.png"
     container.appendChild(label)
-    container.appendChild(document.createElement("br"))
     container.appendChild(img)
-    document.getElementById("processors-container").appendChild(container)
-    container.addEventListener("click",(e)=>{
+    document.getElementById("devices").appendChild(container)
+    container.addEventListener("click", (e) => {
         editor.selectProcessor(id)
     })
+    container.addEventListener("contextmenu",(e)=>{
+        //To be improved!
+        e.preventDefault()
+        if (!confirm(`Are you sure you want to delete processor ${id} ?`)){
+            return
+        }
+        core.removeProcessor(id)
+    })
+    return container
 }
-runFunction = () =>{
+const createStorageBtn = (type,id) =>{
+    const container = document.createElement("div")
+    container.className = "processor"
+    const label = document.createElement("label")
+    label.className = "device-name"
+    label.innerText = "Memory "+type+id
+    const img = document.createElement("img")
+    img.src = type == "Cell"?"resources/memory-cell.png":"resources/memory-bank.png"
+    container.appendChild(label)
+    container.appendChild(img)
+    document.getElementById("devices").appendChild(container)
+    container.addEventListener("click", (e) => {
+       editor.selectStorage(id,type)
+    })
+    container.addEventListener("contextmenu",(e)=>{
+       //To be improved!
+       e.preventDefault()
+       if (!confirm(`Are you sure you want to delete Memory ${type} ${id} ?`)){
+           return
+       }
+       core["removeMem"+type](id)
+    })
+    return container
+}
+const createCanvas = (size,id) =>{
+    const container = document.createElement("div")
+    container.className = "display"
+    const label = document.createElement("label")
+    label.className = "device-name"
+    label.innerText = "display"+id
+    const canvas = document.createElement("canvas")
+    canvas.width = size
+    canvas.height = size
+    container.appendChild(label)
+    container.appendChild(canvas)
+    document.getElementById("displays").appendChild(container)
+    container.addEventListener("contextmenu",(e)=>{
+        //To be improved!
+        e.preventDefault()
+        if (!confirm(`Are you sure you want to delete display ${id} ?`)){
+            return
+        }
+        core.removeDisplay(id)
+    })
+    return container
+}
+const runFunction = () =>{
     core.processors.forEach(processor => {
         if (processor.running) processor.tick()
     });
@@ -24,8 +78,10 @@ class core {
     static defualtDisplaySize = 176
     static displays = []
     static processors = []
+    static memcells = []
+    static membanks = []
     static thread_id = setTimeout(runFunction,1)
-    static suportedDevices = ["display"]
+    static suportedDevices = ["display","cell","bank"]
     static tick_speed = 4
     static createDrawBuffer = (size,color) =>{
         const arr = new Uint8ClampedArray(size*size*4);
@@ -44,18 +100,20 @@ class core {
         }
         return true
     }
-    static createDisplay = (id,size) =>{
-        if (this.getDisplay(id)) {
-            logger.warn("Trying to create display with taken id") 
-            return
-        }
-        this.displays.push(new Display(size,id))
-    }
     static stopThread = () =>{
         clearTimeout(this.thread_id)
     }
     static startThread = () =>{
         this.thread_id = setTimeout(runFunction,1)
+    }
+    static createDisplay = (id,size) =>{
+        size = size==80?size:core.defualtDisplaySize
+        if (this.getDisplay(id)) {
+            logger.warn("Trying to create display with taken id") 
+            return
+        }
+        let displayElement = createCanvas(size,id)
+        this.displays.push(new Display(size,id,displayElement))
     }
     static createProcessor = (instructions,id, speed) =>{
         if (this.getProcessor(id)) {
@@ -63,8 +121,63 @@ class core {
             this.getProcessor(id).instructions = instructions.split("\n")
             return
         }
-        createProcessorBtn(id)
-        this.processors.push(new Processor(instructions.split("\n"),id,speed))
+        let btn = createProcessorBtn(id)
+        this.processors.push(new Processor(instructions.split("\n"),id,btn,speed))
+    }
+    static createMemCell = (id) =>{
+        if (this.getMemCell(id)) {
+            logger.warn("Trying to create memcell with taken id") 
+            return
+        }
+        let btn = createStorageBtn("Cell",id) //CRATE BTN FOR MECELLC WITH NEW UI
+        this.memcells.push(new memcell(id,btn))
+    }
+    static createMemBank = (id) =>{
+        if (this.getMemBank(id)) {
+            logger.warn("Trying to create membank with taken id") 
+            return
+        }
+        let btn = createStorageBtn("Bank",id) //CRATE BTN FOR MEMBANK WITH NEW UI
+        this.membanks.push(new membank(id,btn))
+    }
+    static removeDisplay = (id) =>{
+        core.displays = core.displays.filter(display=>{
+            if (display.id == id){
+                display.displayElement.remove()
+                return false
+            }
+            return true
+        })
+    }
+    static removeProcessor = (id) =>{
+        core.processors = core.processors.filter(processor=>{
+            if (processor.id == id){
+                if (editor.curProcessor == id){
+                    editor.selectProcessor(false)
+                }
+                processor.btn.remove()
+                return false
+            }
+            return true
+        })
+    }
+    static removeMemCell = (id) =>{
+        core.memcells = core.memcells.filter(cell=>{
+            if (cell.id == id){
+                cell.btn.remove()
+                return false
+            }
+            return true
+        })
+    }
+    static removeMemBank = (id) =>{
+        core.membanks = core.membanks.filter(bank=>{
+            if (bank.id == id){
+                bank.btn.remove()
+                return false
+            }
+            return true
+        })
     }
     static getDisplay = (id) =>{
         for (let i = 0; i < this.displays.length; i++) {
@@ -78,6 +191,18 @@ class core {
         }
         return false
     }
+    static getMemCell = (id) =>{
+        for (let i = 0; i < this.memcells.length; i++) {
+            if (this.memcells[i].id == id) return this.memcells[i]
+        }
+        return false
+    }
+    static getMemBank = (id) =>{
+        for (let i = 0; i < this.membanks.length; i++) {
+            if (this.membanks[i].id == id) return this.membanks[i]
+        }
+        return false
+    }
     static getDevice = (name) =>{
         for (let i = 0; i < this.suportedDevices.length; i++) {
             if (name.replace(this.suportedDevices[i],"") !== name){
@@ -86,6 +211,10 @@ class core {
                 switch (deviceName){
                     case "display":
                         return this.getDisplay(parseInt(deviceId,10))
+                    case "cell":
+                        return this.getMemCell(parseInt(deviceId,10))
+                    case "bank":
+                        return this.getMemBank(parseInt(deviceId,10))
                     default :
                         logger.log("Trying to get unknown device")
                         return false
