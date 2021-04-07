@@ -19,17 +19,18 @@ class fs{
                 case "display":
                     core.createDisplay(device.id,device.size)
                     break
+                case "bank":
+                    core.createMemBank(device.id)
+                    break
                 case "cell":
                     core.createMemCell(device.id)
-                    break
-                case "bank":
-                    core.createMemBank(devices.id)
                     break
                 default:
                     console.warn("Trying to load unknown device ",device)
                     break
             }
         });
+        editor.selectStorage(settings.storageSelected,settings.storageType) 
         editor.selectProcessor(settings.curProcessor)
         core.tick_speed = settings.tick_speed
         this.loaded = true
@@ -40,6 +41,8 @@ class fs{
         }
         let settings = {
             "tick_speed":core.tick_speed,
+            "storageSelected":editor.storageSelected,
+            "storageType":editor.storageType,
             "curProcessor":editor.curProcessor
         }
         let devices = []
@@ -59,16 +62,16 @@ class fs{
                 "size":display.displaysize,
             })
         })
-        core.memcells.forEach(cell=>{
-            devices.push({
-                "type":"cell",
-                "id":cell.id
-            })
-        })
         core.membanks.forEach(bank=>{
             devices.push({
                 "type":"bank",
                 "id":bank.id
+            })
+        })
+        core.memcells.forEach(cell=>{
+            devices.push({
+                "type":"cell",
+                "id":cell.id
             })
         })
         localStorage.setItem("settings",JSON.stringify(settings))

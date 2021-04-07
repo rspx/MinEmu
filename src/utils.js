@@ -10,14 +10,24 @@ class Color {
         return {"r":r,"g":g,"b":b,"a":a}
     }
 }
-function addProcessor() {
+const addProcessor = () => {
     const id = parseInt(prompt('Processor id'))
     if(Number.isNaN(id)) return 
-    core.createProcessor('',parseInt(prompt('Processor id')))
+    core.createProcessor('',id)
 }
-function addDisplay() {
+const addDisplay = () => {
     const id = parseInt(prompt('Screen id'))
     const size = parseInt(prompt('Screen size'))
     if(Number.isNaN(id) || Number.isNaN(size)) return
     core.createDisplay(id, size)
+}
+const addBank = () =>{
+    const id = parseInt(prompt('Memory bank id'))
+    if(Number.isNaN(id)) return 
+    core.createMemBank(id)
+}
+const addCell = () =>{
+    const id = parseInt(prompt('Memory cell id'))
+    if(Number.isNaN(id)) return 
+    core.createMemCell(id)
 }

@@ -11,9 +11,9 @@ body{
     height: 100vh;
     grid-template-areas: 
     'topbar topbar topbar'
-    'devices processors editor'
-    'devices processors editor'
-    'devices processors editor';
+    'displays devices editor'
+    'displays devices editor'
+    'displays devices editor';
 }
 
 header{
@@ -37,8 +37,18 @@ header button{
     padding: 0.3em;
     cursor: pointer;
 }
-#devices{
-    grid-area: devices;
+header .back-btn{
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(255, 199, 45);
+    
+    color: #fff;
+    text-decoration: none;
+    padding: 0.3em;
+    cursor: pointer;
+}
+#displays{
+    grid-area: displays;
     border: 1px solid #353535;
     display: flex;
     align-items: flex-start;
@@ -75,6 +85,10 @@ header button{
 }
 .processor.selected{
     background-color: rgba(255, 255, 255, 0.1);
+}
+/* TEMP stuff */
+.selected2{
+    background-color: rgba(100, 100, 255, 0.1);
 }
 #editor{
     grid-area: editor;

@@ -1,9 +1,15 @@
 class storage {
-    constructor (id,btn,size){
+    constructor (id,btn,type,size){
         this.btn = btn
         this.id = id
+        this.type = type
         this.size = size
         this.values = []
+    }
+    updateDebug = () =>{
+        if (editor.storageSelected == this.id && editor.storageType == this.type){
+            editor.displayStorageVariables()
+        }
     }
     write = (adress,value) =>{
         if (adress>this.size){
@@ -12,12 +18,15 @@ class storage {
         if (typeof(value) !== "number"){
             if (value){
                 this.values[adress] = 1
+                this.updateDebug()
                 return true
             }
             this.values[adress] = 0
+            this.updateDebug()
             return true
         }
         this.values[adress] = value
+        this.updateDebug()
         return true
     }
     read = (adress) =>{
@@ -33,11 +42,11 @@ class storage {
 }
 class memcell extends storage {
     constructor(id,btn){
-        super(id,btn,64)
+        super(id,btn,"Cell",64)
     }
 }
 class membank extends storage {
     constructor(id,btn){
-        super(id,btn,512)
+        super(id,btn,"Bank",512)
     }
 }

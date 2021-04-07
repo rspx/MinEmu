@@ -16,12 +16,14 @@
 </head>
 <body onload = "fs.load()">
 	<header>
+		<a href = "https://mindustryschematics.com/" class = "back-btn">Mindustry schematics</a>
 		<button onclick="addProcessor()">New Processor</button>
-		<button onclick="addDisplay()">New
-			Display</button>
+		<button onclick="addDisplay()">New Display</button>
+		<button onclick="addCell()">New Memory cell</button>
+		<button onclick="addBank()">New Memory bank</button>
 	</header>
+	<div id="displays"></div>
 	<div id="devices"></div>
-	<div id="processors"></div>
 	<div id="editor">
 		<div class="editor_tools">
 			<img id="play-pause" onclick="editor.toggleProcessor()" class="btn" src="resources/play.svg"><img>

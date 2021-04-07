@@ -8,7 +8,7 @@ const createProcessorBtn = (id) =>{
     img.src = "resources/logic-processor.png"
     container.appendChild(label)
     container.appendChild(img)
-    document.getElementById("processors").appendChild(container)
+    document.getElementById("devices").appendChild(container)
     container.addEventListener("click", (e) => {
         editor.selectProcessor(id)
     })
@@ -19,6 +19,30 @@ const createProcessorBtn = (id) =>{
             return
         }
         core.removeProcessor(id)
+    })
+    return container
+}
+const createStorageBtn = (type,id) =>{
+    const container = document.createElement("div")
+    container.className = "processor"
+    const label = document.createElement("label")
+    label.className = "device-name"
+    label.innerText = "Memory "+type+id
+    const img = document.createElement("img")
+    img.src = type == "Cell"?"resources/memory-cell.png":"resources/memory-bank.png"
+    container.appendChild(label)
+    container.appendChild(img)
+    document.getElementById("devices").appendChild(container)
+    container.addEventListener("click", (e) => {
+       editor.selectStorage(id,type)
+    })
+    container.addEventListener("contextmenu",(e)=>{
+       //To be improved!
+       e.preventDefault()
+       if (!confirm(`Are you sure you want to delete Memory ${type} ${id} ?`)){
+           return
+       }
+       core["removeMem"+type](id)
     })
     return container
 }
@@ -33,7 +57,7 @@ const createCanvas = (size,id) =>{
     canvas.height = size
     container.appendChild(label)
     container.appendChild(canvas)
-    document.getElementById("devices").appendChild(container)
+    document.getElementById("displays").appendChild(container)
     container.addEventListener("contextmenu",(e)=>{
         //To be improved!
         e.preventDefault()
@@ -105,7 +129,7 @@ class core {
             logger.warn("Trying to create memcell with taken id") 
             return
         }
-        let btn = {remove:()=>{}} //CRATE BTN FOR MECELLC WITH NEW UI
+        let btn = createStorageBtn("Cell",id) //CRATE BTN FOR MECELLC WITH NEW UI
         this.memcells.push(new memcell(id,btn))
     }
     static createMemBank = (id) =>{
@@ -113,7 +137,7 @@ class core {
             logger.warn("Trying to create membank with taken id") 
             return
         }
-        let btn = {remove:()=>{}} //CRATE BTN FOR MEMBANK WITH NEW UI
+        let btn = createStorageBtn("Bank",id) //CRATE BTN FOR MEMBANK WITH NEW UI
         this.membanks.push(new membank(id,btn))
     }
     static removeDisplay = (id) =>{
