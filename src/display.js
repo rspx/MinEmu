@@ -8,4 +8,7 @@ class Display{
     displayBuff = (buffer) =>{
       this.ctx.putImageData(new ImageData(buffer.buffer,buffer.size,buffer.size),0,0)
     }
+    toString = () =>{
+      return this.size==80?"logic-display":"large-logic-display"
+    }
 }

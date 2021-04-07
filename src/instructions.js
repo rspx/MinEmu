@@ -6,6 +6,9 @@ const parseArgument = (text,processor) =>{
     //Parse devices variable
     for (let i = 0; i < core.suportedDevices.length; i++) {
         if (text.includes(core.suportedDevices[i])){
+            if (!core.getDevice(text)){
+                return null
+            }
             return core.getDevice(text)
         }
     }
@@ -57,6 +60,22 @@ class InstructionHandler{
     static printflush = (args,processor) =>{
         console.log(`${args[0]}:${processor.printBuffer}`)
         processor.printBuffer = null
+    }
+    static write = (args,processor) =>{
+        //write input cell1 adress
+        try{
+            parseArgument(args[1],processor).write(parseArgument(args[2],processor),parseArgument(args[0],processor))
+        }catch{
+            logger.warn("trying to write to unexisting memcell or membank")
+        }
+    }
+    static read = (args,processor) =>{
+        //read output cell1 adress
+        try{
+            processor.variables[args[0]] = parseArgument(args[1],processor).read(parseArgument(args[2],processor))
+        }catch{
+            logger.warn("trying to read to unexisting memcell or membank")
+        }
     }
     static draw = (args,processor) => {
         switch(args[0]){

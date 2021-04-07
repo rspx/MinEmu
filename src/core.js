@@ -59,8 +59,10 @@ class core {
     static defualtDisplaySize = 176
     static displays = []
     static processors = []
+    static memcells = []
+    static membanks = []
     static thread_id = setTimeout(runFunction,1)
-    static suportedDevices = ["display"]
+    static suportedDevices = ["display","cell","bank"]
     static tick_speed = 4
     static createDrawBuffer = (size,color) =>{
         const arr = new Uint8ClampedArray(size*size*4);
@@ -79,6 +81,12 @@ class core {
         }
         return true
     }
+    static stopThread = () =>{
+        clearTimeout(this.thread_id)
+    }
+    static startThread = () =>{
+        this.thread_id = setTimeout(runFunction,1)
+    }
     static createDisplay = (id,size) =>{
         size = size==80?size:core.defualtDisplaySize
         if (this.getDisplay(id)) {
@@ -88,12 +96,6 @@ class core {
         let displayElement = createCanvas(size,id)
         this.displays.push(new Display(size,id,displayElement))
     }
-    static stopThread = () =>{
-        clearTimeout(this.thread_id)
-    }
-    static startThread = () =>{
-        this.thread_id = setTimeout(runFunction,1)
-    }
     static createProcessor = (instructions,id, speed) =>{
         if (this.getProcessor(id)) {
             logger.warn("Trying to create processor with taken id updating instructions instead") 
@@ -102,6 +104,31 @@ class core {
         }
         let btn = createProcessorBtn(id)
         this.processors.push(new Processor(instructions.split("\n"),id,btn,speed))
+    }
+    static createMemCell = (id) =>{
+        if (this.getMemCell(id)) {
+            logger.warn("Trying to create memcell with taken id") 
+            return
+        }
+        let btn = {remove:()=>{}} //CRATE BTN FOR MECELLC WITH NEW UI
+        this.memcells.push(new memcell(id,btn))
+    }
+    static createMemBank = (id) =>{
+        if (this.getMemBank(id)) {
+            logger.warn("Trying to create membank with taken id") 
+            return
+        }
+        let btn = {remove:()=>{}} //CRATE BTN FOR MEMBANK WITH NEW UI
+        this.membanks.push(new membank(id,btn))
+    }
+    static removeDisplay = (id) =>{
+        core.displays = core.displays.filter(display=>{
+            if (display.id == id){
+                display.displayElement.remove()
+                return false
+            }
+            return true
+        })
     }
     static removeProcessor = (id) =>{
         core.processors = core.processors.filter(processor=>{
@@ -115,10 +142,19 @@ class core {
             return true
         })
     }
-    static removeDisplay = (id) =>{
-        core.displays = core.displays.filter(display=>{
-            if (display.id == id){
-                display.displayElement.remove()
+    static removeMemCell = (id) =>{
+        core.memcells = core.memcells.filter(cell=>{
+            if (cell.id == id){
+                cell.btn.remove()
+                return false
+            }
+            return true
+        })
+    }
+    static removeMemBank = (id) =>{
+        core.membanks = core.membanks.filter(bank=>{
+            if (bank.id == id){
+                bank.btn.remove()
                 return false
             }
             return true
@@ -136,6 +172,18 @@ class core {
         }
         return false
     }
+    static getMemCell = (id) =>{
+        for (let i = 0; i < this.memcells.length; i++) {
+            if (this.memcells[i].id == id) return this.memcells[i]
+        }
+        return false
+    }
+    static getMemBank = (id) =>{
+        for (let i = 0; i < this.membanks.length; i++) {
+            if (this.membanks[i].id == id) return this.membanks[i]
+        }
+        return false
+    }
     static getDevice = (name) =>{
         for (let i = 0; i < this.suportedDevices.length; i++) {
             if (name.replace(this.suportedDevices[i],"") !== name){
@@ -144,6 +192,10 @@ class core {
                 switch (deviceName){
                     case "display":
                         return this.getDisplay(parseInt(deviceId,10))
+                    case "cell":
+                        return this.getMemCell(parseInt(deviceId,10))
+                    case "bank":
+                        return this.getMemBank(parseInt(deviceId,10))
                     default :
                         logger.log("Trying to get unknown device")
                         return false

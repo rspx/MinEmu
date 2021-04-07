@@ -19,6 +19,12 @@ class fs{
                 case "display":
                     core.createDisplay(device.id,device.size)
                     break
+                case "cell":
+                    core.createMemCell(device.id)
+                    break
+                case "bank":
+                    core.createMemBank(devices.id)
+                    break
                 default:
                     console.warn("Trying to load unknown device ",device)
                     break
@@ -51,6 +57,18 @@ class fs{
                 "type":"display",
                 "id":display.id,
                 "size":display.displaysize,
+            })
+        })
+        core.memcells.forEach(cell=>{
+            devices.push({
+                "type":"cell",
+                "id":cell.id
+            })
+        })
+        core.membanks.forEach(bank=>{
+            devices.push({
+                "type":"bank",
+                "id":bank.id
             })
         })
         localStorage.setItem("settings",JSON.stringify(settings))
