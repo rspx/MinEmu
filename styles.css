@@ -35,6 +35,7 @@ header button{
     background-color: rgba(0,0,0,0.5);
     color: #bbb;
     padding: 0.3em;
+    cursor: pointer;
 }
 #devices{
     grid-area: devices;
@@ -70,6 +71,7 @@ header button{
     align-items: center;
     gap: 0.6em;
     border-radius: 10px;
+    cursor: pointer;
 }
 .processor.selected{
     background-color: rgba(255, 255, 255, 0.1);
@@ -91,6 +93,10 @@ header button{
 .editor_tools .btn{
     width: 2em;
     height: 90%;
+    cursor: pointer;
+}
+.editor_tools .btn:hover{
+    background-color: rgba(0,0,0,0.3);
 }
 #code{
     flex: 2;
