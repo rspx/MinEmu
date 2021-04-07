@@ -1,5 +1,6 @@
 *{
     font-family: 'Nunito';
+    box-sizing: border-box;
 }
 body{
     background-color: #232323;
@@ -23,6 +24,17 @@ header{
     height: 100%;
     background-color: #353535;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    padding-left: 1em;
+    gap: 1em;
+}
+header button{
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(0,0,0,0.5);
+    color: #bbb;
+    padding: 0.3em;
 }
 #devices{
     grid-area: devices;
