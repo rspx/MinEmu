@@ -47,7 +47,7 @@ class editor{
     }
     static createVariable = (name,value) =>{
         let variable = document.createElement("label")
-        variable.className = "varible-text"
+        variable.className = "variable-text"
         variable.innerHTML = `${name}:${value}`
         document.getElementById("debug").appendChild(variable)
     }
