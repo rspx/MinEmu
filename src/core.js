@@ -1,16 +1,20 @@
-createProcessorBtn = (id) =>{
-    container = document.createElement("div")
-    container.className = "processor-container"
-    label = document.createElement("label")
+const createProcessorBtn = (id) =>{
+    const container = document.createElement("div")
+    container.className = "processor"
+    const label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "processor"+id
-    img = document.createElement("img")
+    const img = document.createElement("img")
     img.src = "resources/logic-processor.png"
     container.appendChild(label)
-    container.appendChild(document.createElement("br"))
     container.appendChild(img)
-    document.getElementById("processors-container").appendChild(container)
-    container.addEventListener("click",(e)=>{
+    document.getElementById("processors").appendChild(container)
+    container.addEventListener("click", (e) => {
+        const { children } = document.getElementById("processors")
+        for (const child of children) {
+            child.classList.remove("selected")
+        }
+        container.classList.add("selected")
         editor.selectProcessor(id)
     })
     container.addEventListener("contextmenu",(e)=>{
@@ -23,19 +27,18 @@ createProcessorBtn = (id) =>{
     })
     return container
 }
-createCanvas = (size,id) =>{
-    container = document.createElement("div")
-    container.className = "display-container"
-    label = document.createElement("label")
+const createCanvas = (size,id) =>{
+    const container = document.createElement("div")
+    container.className = "display"
+    const label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "display"+id
-    canvas = document.createElement("canvas")
+    const canvas = document.createElement("canvas")
     canvas.width = size
     canvas.height = size
     container.appendChild(label)
-    container.appendChild(document.createElement("br"))
     container.appendChild(canvas)
-    document.getElementById("devices-container").appendChild(container)
+    document.getElementById("devices").appendChild(container)
     container.addEventListener("contextmenu",(e)=>{
         //To be improved!
         e.preventDefault()
@@ -46,7 +49,7 @@ createCanvas = (size,id) =>{
     })
     return container
 }
-runFunction = () =>{
+const runFunction = () =>{
     core.processors.forEach(processor => {
         if (processor.running) processor.tick()
     });
