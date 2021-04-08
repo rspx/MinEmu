@@ -1,5 +1,14 @@
+<h1 align="center">
+  <img alt="An Example .io Game" title="An Mindustry Logic Emulator" src="https://i.ibb.co/Jd2ggdC/PKSQzOr.jpg" width="750"> <br />
+  An Mindustry Logic Emulator
+</h1>
+<h4 align="center">
+  <a href="https://logic.mindustryschematics.com">https://logic.mindustryschematics.com</a>
+</h4>
+
 # Min emu
-Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic emulator. At it's current state it can only be used for very simple programs without any inpus. You can use it without downloading on official [page](https://rspx.github.io/MinEmu/).
+Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic emulator. At it's current state it can only be used for very simple programs without any inpus. 
+
 ### Feature
 - Unlimited number of processors
 - Unlimited number of displays
