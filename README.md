@@ -32,6 +32,8 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 - `op` - partial support
 - `write` - full support
 - `read` - full support
+- `controll` - partial support(beta)
+- `sensor` - partial support(beta)
 
 ### Showcase
 ![](https://i.ibb.co/2MDySpg/2021-04-07-22-35-10.gif)

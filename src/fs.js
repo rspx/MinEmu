@@ -8,6 +8,9 @@ class fs{
         }
         let settings = JSON.parse(localStorage.getItem("settings"))
         let devices = JSON.parse(localStorage.getItem("devices"))
+        if (settings.bls){
+            core.noBorder = true
+        }
         devices.forEach(device => {
             switch (device.type){
                 case "processor":
@@ -25,12 +28,15 @@ class fs{
                 case "cell":
                     core.createMemCell(device.id)
                     break
+                case "switch":
+                    core.createSwitch(device.id)
+                    break
                 default:
                     console.warn("Trying to load unknown device ",device)
                     break
             }
         });
-        editor.selectStorage(settings.storageSelected,settings.storageType) 
+        editor.selectStorage(settings.storcoageSelected,settings.storageType) 
         editor.selectProcessor(settings.curProcessor)
         core.tick_speed = settings.tick_speed
         this.loaded = true
@@ -43,7 +49,8 @@ class fs{
             "tick_speed":core.tick_speed,
             "storageSelected":editor.storageSelected,
             "storageType":editor.storageType,
-            "curProcessor":editor.curProcessor
+            "curProcessor":editor.curProcessor,
+            "bls":core.noBorder
         }
         let devices = []
         core.processors.forEach(processor=>{
@@ -72,6 +79,12 @@ class fs{
             devices.push({
                 "type":"cell",
                 "id":cell.id
+            })
+        })
+        core.switches.forEach(Switch=>{
+            devices.push({
+                "type":"switch",
+                "id":Switch.id
             })
         })
         localStorage.setItem("settings",JSON.stringify(settings))

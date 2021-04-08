@@ -31,3 +31,8 @@ const addCell = () =>{
     if(Number.isNaN(id)) return 
     core.createMemCell(id)
 }
+const addSwitch = () =>{
+    const id = parseInt(prompt('Switch id'))
+    if(Number.isNaN(id)) return 
+    core.createSwitch(id)
+}

@@ -1,5 +1,6 @@
-class Processor{
+class Processor extends device {
     constructor(instructions,id,btn, speed){
+        super(id)
         this.variables = {}
         this.id = id
         this.running = false
@@ -25,10 +26,18 @@ class Processor{
     }
     tick = () =>{
         if (typeof(this.instructions) == "undefined") return false
+        if (!this.getProperty("@enabled")) return false
         if (typeof(this.instructions[this.curInstrucion]) == "undefined") this.curInstrucion = 0
         let instruction = this.instructions[this.curInstrucion].split(" ")
         this.executeInstruction(instruction.shift(),instruction)
         this.curInstrucion++
         return true
+    }
+    //TEMP stuff can't find cross icon from the game)
+    onDisable = () => {
+        this.btn.children[0].innerText += "(disabled)"
+    }
+    onEnabled = () => {
+        this.btn.children[0].innerText = "processor"+this.id
     }
 }

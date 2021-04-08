@@ -1,9 +1,9 @@
 const createProcessorBtn = (id) =>{
     const container = document.createElement("div")
-    container.className = "processor"
+    container.className = "device"
     const label = document.createElement("label")
     label.className = "device-name"
-    label.innerText = "processor"+id
+    label.innerText = "Processor"+id
     const img = document.createElement("img")
     img.src = "resources/logic-processor.png"
     container.appendChild(label)
@@ -24,7 +24,7 @@ const createProcessorBtn = (id) =>{
 }
 const createStorageBtn = (type,id) =>{
     const container = document.createElement("div")
-    container.className = "processor"
+    container.className = "device"
     const label = document.createElement("label")
     label.className = "device-name"
     label.innerText = "Memory "+type+id
@@ -46,15 +46,47 @@ const createStorageBtn = (type,id) =>{
     })
     return container
 }
+const createSwitchBtn = (id) =>{
+    const container = document.createElement("div")
+    container.className = "device"
+    const label = document.createElement("label")
+    label.className = "device-name"
+    label.innerText = "switch"+id
+    const img = document.createElement("img")
+    img.src = "resources/switch.png"
+    img.className = "Switch"
+    const img2 = document.createElement("img")
+    img2.src = "resources/switch-on.png"
+    img2.className = "switch-btn"
+    container.appendChild(label)
+    container.appendChild(img)
+    container.appendChild(img2)
+    document.getElementById("devices").appendChild(container)
+    container.addEventListener("click", (e) => {
+        core.getSwitch(id).toggle()
+     })
+     container.addEventListener("contextmenu",(e)=>{
+        //To be improved!
+        e.preventDefault()
+        if (!confirm(`Are you sure you want to delete switch${id} ?`)){
+            return
+        }
+        core.removeSwitch(id)
+     })
+    return container
+}
 const createCanvas = (size,id) =>{
     const container = document.createElement("div")
     container.className = "display"
     const label = document.createElement("label")
     label.className = "device-name"
-    label.innerText = "display"+id
+    label.innerText = "Display"+id
     const canvas = document.createElement("canvas")
     canvas.width = size
     canvas.height = size
+    if (!core.noBorder){
+        canvas.classList.add("border")
+    }
     container.appendChild(label)
     container.appendChild(canvas)
     document.getElementById("displays").appendChild(container)
@@ -70,7 +102,12 @@ const createCanvas = (size,id) =>{
 }
 const runFunction = () =>{
     core.processors.forEach(processor => {
-        if (processor.running) processor.tick()
+        if (!processor.running){
+            return
+        } 
+        if (!processor.tick()){
+            logger.warn(`Falied to tick processors ${processor.id}`)
+        }
     });
     core.thread_id = setTimeout(runFunction,core.tick_speed)
 }
@@ -78,10 +115,11 @@ class core {
     static defualtDisplaySize = 176
     static displays = []
     static processors = []
+    static switches = []
     static memcells = []
     static membanks = []
     static thread_id = setTimeout(runFunction,1)
-    static suportedDevices = ["display","cell","bank"]
+    static suportedDevices = ["display","processor","cell","bank","switch"]
     static tick_speed = 4
     static createDrawBuffer = (size,color) =>{
         const arr = new Uint8ClampedArray(size*size*4);
@@ -140,6 +178,14 @@ class core {
         let btn = createStorageBtn("Bank",id) //CRATE BTN FOR MEMBANK WITH NEW UI
         this.membanks.push(new membank(id,btn))
     }
+    static createSwitch = (id) =>{
+        if (this.getSwitch(id)) {
+            logger.warn("Trying to create switch with taken id") 
+            return
+        }
+        let btn = createSwitchBtn(id)
+        this.switches.push(new Switch(id,btn))
+    }
     static removeDisplay = (id) =>{
         core.displays = core.displays.filter(display=>{
             if (display.id == id){
@@ -179,6 +225,15 @@ class core {
             return true
         })
     }
+    static removeSwitch = (id) =>{
+        core.switches = core.switches.filter(Switch=>{
+            if (Switch.id == id){
+                Switch.btn.remove()
+                return false
+            }
+            return true
+        })
+    }
     static getDisplay = (id) =>{
         for (let i = 0; i < this.displays.length; i++) {
             if (this.displays[i].id == id) return this.displays[i]
@@ -203,6 +258,12 @@ class core {
         }
         return false
     }
+    static getSwitch = (id) =>{
+        for (let i = 0; i < this.switches.length; i++) {
+            if (this.switches[i].id == id) return this.switches[i]
+        }
+        return false
+    }
     static getDevice = (name) =>{
         for (let i = 0; i < this.suportedDevices.length; i++) {
             if (name.replace(this.suportedDevices[i],"") !== name){
@@ -211,10 +272,14 @@ class core {
                 switch (deviceName){
                     case "display":
                         return this.getDisplay(parseInt(deviceId,10))
+                    case "processor":
+                        return this.getProcessor(parseInt(deviceId,10))
                     case "cell":
                         return this.getMemCell(parseInt(deviceId,10))
                     case "bank":
                         return this.getMemBank(parseInt(deviceId,10))
+                    case "switch":
+                        return this.getSwitch(parseInt(deviceId,10))
                     default :
                         logger.log("Trying to get unknown device")
                         return false

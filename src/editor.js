@@ -75,6 +75,7 @@ class editor{
     }
     static stepInstruction = () =>{
         core.getProcessor(this.curProcessor).tick()
+        this.displayVariables()
     }
     static createVariable = (name,value) =>{
         let variable = document.createElement("label")

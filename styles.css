@@ -55,7 +55,6 @@ header .back-btn{
     justify-content: center;
     overflow-y: auto;
     flex-wrap: wrap;
-
 }
 .display{
     padding: 1em;
@@ -73,7 +72,10 @@ header .back-btn{
     overflow-y: auto;
     flex-wrap: wrap;
 }
-.processor{
+.device{
+    position: relative;
+    top: 0;
+    left: 0;
     padding: 0.5em;
     margin: 1em;
     display: inline-flex;
@@ -83,12 +85,25 @@ header .back-btn{
     border-radius: 10px;
     cursor: pointer;
 }
-.processor.selected{
+.device.selected{
     background-color: rgba(255, 255, 255, 0.1);
 }
 /* TEMP stuff */
-.selected2{
+.device.selected2{
     background-color: rgba(100, 100, 255, 0.1);
+}
+/*This is really stupid */
+.switch{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.switch-btn{
+    position: relative;
+    top: -41.6px;
+}
+.hidden{
+    visibility:hidden;
 }
 #editor{
     grid-area: editor;
@@ -134,17 +149,15 @@ header .back-btn{
 canvas {
     transform: scaleY(-1);
     background-color: #565666;
+    
+}
+.border{
     border: 4px ridge #A5AEB5;
 }
 
 body{
     background-color: #232323;
     margin: 0;
-}
-canvas{
-    transform: scaleY(-1);
-    background-color: #565666;
-    border: 4px ridge #A5AEB5;
 }
 .device-name{
     user-select: none;

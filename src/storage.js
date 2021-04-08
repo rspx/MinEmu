@@ -33,7 +33,7 @@ class storage {
         if (this.values[adress]){
             return this.values[adress]
         }else{
-            return null
+            return 0
         }
     }
     toString = () =>{

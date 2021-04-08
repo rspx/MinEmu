@@ -12,6 +12,10 @@ const parseArgument = (text,processor) =>{
             return core.getDevice(text)
         }
     }
+    //Parse properies
+    if (text[0] == "@"){
+        return text
+    }
     //Check if argument contains any characters
     if (parseFloat(text) == parseFloat(text).toString()){
         return parseFloat(text)
@@ -45,9 +49,7 @@ class InstructionHandler{
     }
     static drawflush = (args,processor) =>{
         if (!parseArgument(args[0],processor)){
-            logger.warn("Trying to send draw buffer to non existant display")
-            logger.warn(parseArgument(args[0],processor))
-            logger.warn(args[0])
+            logger.warn(`Trying to send draw buffer to non existant display ${args[0]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
             return
         }
         //logger.log(`Flushing ${args[0]} at instruction ${processor.curInstrucion}`)
@@ -66,7 +68,7 @@ class InstructionHandler{
         try{
             parseArgument(args[1],processor).write(parseArgument(args[2],processor),parseArgument(args[0],processor))
         }catch{
-            logger.warn("trying to write to unexisting memcell or membank")
+            logger.warn(`Trying to write to unexisting memcell or membank @ processors${processor.id} instruction ${processor.curInstrucion}`)
         }
     }
     static read = (args,processor) =>{
@@ -74,9 +76,31 @@ class InstructionHandler{
         try{
             processor.variables[args[0]] = parseArgument(args[1],processor).read(parseArgument(args[2],processor))
         }catch{
-            logger.warn("trying to read to unexisting memcell or membank")
+            logger.warn(`Trying to read to unexisting memcell or membank @ processors${processor.id} instruction ${processor.curInstrucion}`)
         }
     }
+    static sensor = (args,processor) =>{
+        //sensor result target property
+        try{
+            processor.variables[args[0]] = parseArgument(args[1],processor).getProperty(parseArgument(args[2],processor))
+        }catch(err){
+            logger.warn(`Trying to get ${args[2]} of unexisting ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
+        }
+    }
+    static control = (args,processor) => {
+        //control enabled target value 0 0 0
+        switch (args[0]){
+            case "enabled":
+                try{
+                    parseArgument(args[1],processor).setProperty("@enabled",parseArgument(args[2],processor))
+                }catch{
+                    logger.warn(`Trying to set ${args[2]} of unexisting ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
+                }
+                break
+            default:
+                logger.warn(`Trying to set unknown property ${args[0]} of ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
+        }
+    } 
     static draw = (args,processor) => {
         switch(args[0]){
             case "color":
@@ -96,7 +120,7 @@ class InstructionHandler{
                             processor.drawbuffer.buffer[pos+2] = processor.color.b;           // some B value
                             processor.drawbuffer.buffer[pos+3] = processor.color.a;  
                         }catch (err){
-                            logger.warn("Trying to draw outside of buffer"+err)
+                            logger.warn("Trying to draw outside of buffer "+err)
                         }
                     }
                 }
@@ -108,7 +132,7 @@ class InstructionHandler{
                 processor.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize,new Color(parseArgument(args[1],processor),parseArgument(args[2],processor),parseArgument(args[3],processor),parseArgument(args[4],processor)))
                 break
             default:
-                logger.warn(`Unknow parameter for draw ${args[0]}`)
+                logger.warn(`Unknow parameter for draw ${args[0]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
                 break
         }
     }
@@ -155,7 +179,7 @@ class InstructionHandler{
                 processor.curInstrucion = parseInt(args[0])-1
                 break
             default:
-                logger.warn("Unrecognized jump operator")
+                logger.warn(`Unrecognized jump operator @ processors${processor.id} instruction ${processor.curInstrucion}`)
         }
     }
     static op = (args,processor) =>{
@@ -256,7 +280,7 @@ class InstructionHandler{
                 processor.variables[args[1]] = getRandInt(0,parseArgument(args[2],processor))
                 break
             default:
-                logger.warn(`Unrecognized op operator "${args[0]}"`)
+                logger.warn(`Unrecognized op operator "${args[0]}" @ processors${processor.id} instruction ${processor.curInstrucion}`)
                 break
         }
     }
