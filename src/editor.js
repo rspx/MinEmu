@@ -50,16 +50,28 @@ class editor{
     }
     static toggleProcessor = () =>{
         if (this.curProcessor === false) return
+        if (core.getProcessor(this.curProcessor).onBreakPoint()){
+            core.getProcessor(this.curProcessor).skipBreakPoint = true
+        }
         let state = !core.getProcessor(this.curProcessor).running
         core.getProcessor(this.curProcessor).running = state
         this.updateBtns()
     }
-    static createLine = (index,text) =>{
+    static toggleBreakPoint = (linenum) =>{
+        return core.getProcessor(this.curProcessor).toggleBreakPoint(linenum)
+    }
+    static createLine = (index,text,brekapoint) =>{
         let container = document.createElement("div")
         container.className = "code-line"
         let linenumber = document.createElement("label")
         linenumber.className = "line-number"
         linenumber.innerText = index
+        linenumber.addEventListener("click",()=>{
+            linenumber.classList[this.toggleBreakPoint(index)?"add":"remove"]("breakpoint")
+        })
+        if (brekapoint){
+            linenumber.classList.add("breakpoint")
+        }
         let instruction = document.createElement("label")
         instruction.className = "instruction"
         instruction.innerText = text
@@ -70,10 +82,13 @@ class editor{
     static displayCode = () =>{
         document.getElementById("code").innerHTML = ""
         for (let i = 0; i <  core.getProcessor(this.curProcessor).instructions.length; i++) {
-            this.createLine(i,core.getProcessor(this.curProcessor).instructions[i])
+            this.createLine(i,core.getProcessor(this.curProcessor).instructions[i],core.getProcessor(this.curProcessor).breakpoints[i])
         }
     }
     static stepInstruction = () =>{
+        if (core.getProcessor(this.curProcessor).onBreakPoint()){
+            core.getProcessor(this.curProcessor).skipBreakPoint = true
+        }
         core.getProcessor(this.curProcessor).tick()
         this.displayVariables()
     }

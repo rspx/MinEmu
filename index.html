@@ -19,11 +19,16 @@
 <body onload = "fs.load()">
 	<header>
 		<a href = "https://mindustryschematics.com/" class = "back-btn">Mindustry schematics</a>
-		<button onclick="addProcessor()">New Processor</button>
-		<button onclick="addDisplay()">New Display</button>
-		<button onclick="addCell()">New Memory cell</button>
-		<button onclick="addBank()">New Memory bank</button>
-		<button onclick="addSwitch()">New Switch</button>
+		<div class="dropdown">
+			<button class = "dropdown-btn">+</button>
+			<div class="dropdown-content">
+				<button onclick="addProcessor()">New Processor</button>
+				<button onclick="addDisplay()">New Display</button>
+				<button onclick="addCell()">New Memory cell</button>
+				<button onclick="addBank()">New Memory bank</button>
+				<button onclick="addSwitch()">New Switch</button>
+			</div>
+		  </div>
 	</header>
 	<div id="displays"></div>
 	<div id="devices"></div>

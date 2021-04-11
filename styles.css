@@ -34,15 +34,25 @@ header button{
     border: none;
     background-color: rgba(0,0,0,0.5);
     color: #bbb;
+    outline: none;
+    padding: 0.3em;
+    cursor: pointer;
+}
+header button:hover{
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(0, 0, 0, 1);
+    color: #bbb;
+    outline: none;
     padding: 0.3em;
     cursor: pointer;
 }
 header .back-btn{
     border-radius: 5px;
     border: none;
-    background-color: rgb(255, 199, 45);
+    background-color: #ffc72d;
     
-    color: #fff;
+    color: #000;
     text-decoration: none;
     padding: 0.3em;
     cursor: pointer;
@@ -143,6 +153,9 @@ header .back-btn{
     background: transparent;
     color: #bbb;
 }
+#code .breakpoint{
+    background-color: rgba(200, 50, 50, 0.5);
+}
 #debug{
     flex: 1;
 }
@@ -200,4 +213,32 @@ body{
     height: 100%;
     background: rgba(0,0,0,0);
     color: #bbb;
+}
+.dropdown {
+   position: absolute;
+   right: 15px;
+   display: inline-block;
+}
+.dropdown-btn{
+    width: 40px;
+    height: 40px;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #232323;
+  width: 160px;
+  left: -300%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+.dropdown-content button{
+    margin-top: 5px;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown-content p{
+    background-color: red;
 }
