@@ -1,25 +1,30 @@
 <h1 align="center">
-  <img alt="An Example .io Game" title="An Mindustry Logic Emulator" src="https://i.ibb.co/Jd2ggdC/PKSQzOr.jpg" width="750"> <br />
+  <img  title="An Mindustry Logic Emulator" src="https://i.ibb.co/Jd2ggdC/PKSQzOr.jpg" width="750"> <br />
   An Mindustry Logic Emulator
 </h1>
 <h4 align="center">
-  <a href="https://logic.mindustryschematics.com">https://logic.mindustryschematics.com</a>
+  <a href="https://logic.mindustryschematics.com/">https://logic.mindustryschematics.com/</a>
 </h4>
 
 # Min emu
 Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic emulator. At it's current state it can only be used for very simple programs without any inpus. 
 
-### Feature
-- Unlimited number of processors
-- Unlimited number of displays
+### Features
+- Support of display
+- Support of memory bank and cells
+- Support of switches
+- Breakpoints
+- Progress saving
+- Built in editor
 - Debug info
 - Execution control
 
 ### FAQ
-- Press "P" to create processor.
-- Press "S" to create screen.
-- Left click on processor to open it in editor.
-- Right click on processor or screen to delete it.
+- Hover over "+" button to create new processors, displays, etc....
+- Click on processors to open it in the editor
+- Click on memory bank to open it in memory view
+- Right click on any device to delete it
+- Click on the line number to add a breakpoint
 
 ### Suported instructions
 - `print` - full support
