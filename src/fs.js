@@ -18,7 +18,7 @@ class fs{
                     core.getProcessor(device.id).instructions = device.instructions
                     core.getProcessor(device.id).speed = device.speed
                     core.getProcessor(device.id).running = device.running
-                    core.getProcessor(device.id).breakpoints = device.breakpoints
+                    core.getProcessor(device.id).breakpoints = device.breakpoints?device.breakpoints:[]
                     break
                 case "display":
                     core.createDisplay(device.id,device.size)
