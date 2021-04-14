@@ -48,6 +48,9 @@ class device {
         }
         for (let i = 0; i < this.properties.length; i++) {
             if (this.properties[i].name == property){
+                if (this.properties[i].value == value){
+                    return true
+                }
                 this.properties[i].value = value
                 if (property == "enabled" && value == 0){
                     this.onDisable()

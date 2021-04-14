@@ -30,6 +30,7 @@ header{
     gap: 1em;
 }
 header button{
+    user-select: none;
     border-radius: 5px;
     border: none;
     background-color: rgba(0,0,0,0.5);
@@ -51,7 +52,7 @@ header .back-btn{
     border-radius: 5px;
     border: none;
     background-color: #ffc72d;
-    
+    user-select: none;
     color: #000;
     text-decoration: none;
     padding: 0.3em;
@@ -124,7 +125,7 @@ header .back-btn{
 .editor_tools{
     width: 100%;
     align-items: center;
-    /* justify-content: right; */
+    user-select: none;
     height: 5%;
     background-color: #353535;
     box-shadow: 0 0 10px rgb(0 0 0 / 20%);
@@ -175,6 +176,9 @@ body{
 .device-name{
     user-select: none;
     color: #bbb;
+}
+img{
+    user-select: none;
 }
 .exec-controlls{
     width: 30px;
