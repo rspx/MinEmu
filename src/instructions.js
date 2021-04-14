@@ -46,6 +46,9 @@ class InstructionHandler{
     }
     static set = (args,processor) =>{
         processor.variables[args[0]] = parseArgument(args[1],processor)
+        if (editor.curProcessor == processor.id && !editor.editmode){
+            editor.displayVariables()
+        }
     }
     static drawflush = (args,processor) =>{
         if (!parseArgument(args[0],processor)){

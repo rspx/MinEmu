@@ -100,16 +100,31 @@ const createCanvas = (size,id) =>{
     })
     return container
 }
+
+// Timing stuff
+// var funcCount = 0
+// tickCounter = () =>{
+//     //Tick sum from all processors
+//     p = `Got ${funcCount} ticks per seccond`
+//     funcCount = 0
+//     setTimeout(tickCounter,1000)
+// }
+// setTimeout(tickCounter,1000)
 const runFunction = () =>{
-    core.processors.forEach(processor => {
-        if (!processor.running){
-            return
-        } 
-        if (!processor.tick()){
-            logger.warn(`Falied to tick processors ${processor.id}`)
+    if (!core.threadRunning){
+        return
+    }
+    const processors = core.processors
+    const processos_len = core.processors.length
+    for (let i = 0; i < processos_len; i++) {
+        const processor =  processors[i]
+        if (performance.now() - processor.last_tick >= processor.speed && processor.running){
+            setZeroTimeout(processor.tick)
+            processor.last_tick = performance.now()
+            // funcCount++
         }
-    });
-    core.thread_id = setTimeout(runFunction,core.tick_speed)
+    }
+    setZeroTimeout(runFunction)
 }
 class core {
     static defualtDisplaySize = 176
@@ -118,9 +133,8 @@ class core {
     static switches = []
     static memcells = []
     static membanks = []
-    static thread_id = setTimeout(runFunction,1)
+    static threadRunning = false
     static suportedDevices = ["display","processor","cell","bank","switch"]
-    static tick_speed = 4
     static createDrawBuffer = (size,color) =>{
         const arr = new Uint8ClampedArray(size*size*4);
         color = color?color:new Color(89,89,102)
@@ -139,52 +153,57 @@ class core {
         return true
     }
     static stopThread = () =>{
-        clearTimeout(this.thread_id)
+        this.threadRunning = false
     }
-    static startThread = () =>{
-        this.thread_id = setTimeout(runFunction,1)
+    static startThread = () =>{setZeroTimeout(runFunction)
+        this.threadRunning = true
     }
     static createDisplay = (id,size) =>{
         size = size==80?size:core.defualtDisplaySize
         if (this.getDisplay(id)) {
             logger.warn("Trying to create display with taken id") 
-            return
+            return this.getDisplay(id)
         }
         let displayElement = createCanvas(size,id)
         this.displays.push(new Display(size,id,displayElement))
+        return this.getDisplay(id)
     }
     static createProcessor = (instructions,id, speed) =>{
         if (this.getProcessor(id)) {
-            logger.warn("Trying to create processor with taken id updating instructions instead") 
-            this.getProcessor(id).instructions = instructions.split("\n")
-            return
+            logger.warn("Trying to create processor with taken id updating speed instead") 
+            this.getProcessor(id).setSpeed(1000/speed)
+            return this.getProcessor(id)
         }
         let btn = createProcessorBtn(id)
-        this.processors.push(new Processor(instructions.split("\n"),id,btn,speed))
+        this.processors.push(new Processor(instructions.split("\n"),id,btn,1000/speed))
+        return this.getProcessor(id)
     }
     static createMemCell = (id) =>{
         if (this.getMemCell(id)) {
             logger.warn("Trying to create memcell with taken id") 
-            return
+            return this.getMemCell(id)
         }
-        let btn = createStorageBtn("Cell",id) //CRATE BTN FOR MECELLC WITH NEW UI
+        let btn = createStorageBtn("Cell",id)
         this.memcells.push(new memcell(id,btn))
+        return this.getMemCell(id)
     }
     static createMemBank = (id) =>{
         if (this.getMemBank(id)) {
             logger.warn("Trying to create membank with taken id") 
-            return
+            return this.getMemBank(id)
         }
-        let btn = createStorageBtn("Bank",id) //CRATE BTN FOR MEMBANK WITH NEW UI
+        let btn = createStorageBtn("Bank",id)
         this.membanks.push(new membank(id,btn))
+        return this.getMemBank(id)
     }
     static createSwitch = (id) =>{
         if (this.getSwitch(id)) {
             logger.warn("Trying to create switch with taken id") 
-            return
+            return this.getSwitch(id)
         }
         let btn = createSwitchBtn(id)
         this.switches.push(new Switch(id,btn))
+        return this.getSwitch(id)
     }
     static removeDisplay = (id) =>{
         core.displays = core.displays.filter(display=>{

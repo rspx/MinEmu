@@ -16,7 +16,7 @@ class fs{
                 case "processor":
                     core.createProcessor("",device.id)
                     core.getProcessor(device.id).instructions = device.instructions
-                    core.getProcessor(device.id).speed = device.speed
+                    core.getProcessor(device.id).speed = device.speed?device.speed:1000/120
                     core.getProcessor(device.id).running = device.running
                     core.getProcessor(device.id).breakpoints = device.breakpoints?device.breakpoints:[]
                     break
@@ -39,7 +39,7 @@ class fs{
         });
         editor.selectStorage(settings.storcoageSelected,settings.storageType) 
         editor.selectProcessor(settings.curProcessor)
-        core.tick_speed = settings.tick_speed
+        core.startThread()
         this.loaded = true
     }
     static save = () =>{
@@ -47,7 +47,6 @@ class fs{
             return
         }
         let settings = {
-            "tick_speed":core.tick_speed,
             "storageSelected":editor.storageSelected,
             "storageType":editor.storageType,
             "curProcessor":editor.curProcessor,

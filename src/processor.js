@@ -8,6 +8,7 @@ class Processor extends device {
         this.speed = speed
         this.curInstrucion = 0
         this.btn = btn
+        this.last_tick = performance.now()
         this.color = new Color(0,0,0,255)
         this.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize)
         this.printBuffer = null
@@ -16,9 +17,8 @@ class Processor extends device {
     }
     executeInstruction = (instruction,parameters) =>{
         if (instruction == ""){return}
-        if (editor.curProcessor == this.id) {
+        if (editor.curProcessor == this.id && !editor.editmode) {
             editor.displayCurInstruction(this.curInstrucion)
-            editor.displayVariables()
         }
         if (!(instruction in InstructionHandler)) {
             logger.warn(`Unknown instruction:"${instruction}"`)
@@ -26,14 +26,17 @@ class Processor extends device {
         }
         InstructionHandler[instruction](parameters,this)
     }
+    setSpeed = (speed) => {
+        //Converting to tick per ms
+        this.speed = 1000/speed
+    }
     tick = () =>{
-        if (typeof(this.instructions) == "undefined") return false
-        if (!this.getProperty("@enabled")) return false
-        if (typeof(this.instructions[this.curInstrucion]) == "undefined") this.curInstrucion = 0
+        if (typeof(this.instructions) == "undefined" || !this.getProperty("@enabled")) return false
         if (this.breakpoints[this.curInstrucion] && !this.skipBreakPoint) {
             this.running = false
             return
         }
+        if (typeof(this.instructions[this.curInstrucion]) == "undefined") this.curInstrucion = 0
         let instruction = this.instructions[this.curInstrucion].split(" ")
         this.executeInstruction(instruction.shift(),instruction)
         this.curInstrucion++

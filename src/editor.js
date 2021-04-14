@@ -3,6 +3,7 @@ class editor{
     static storageSelected = false
     static storageType = false
     static editmode = false
+    static prevInstruction = document.body
     static selectProcessor = (id) =>{
         if (this.curProcessor){
             this.unhighlightProcessor(this.curProcessor)
@@ -90,21 +91,24 @@ class editor{
             core.getProcessor(this.curProcessor).skipBreakPoint = true
         }
         core.getProcessor(this.curProcessor).tick()
-        this.displayVariables()
     }
     static createVariable = (name,value) =>{
-        let variable = document.createElement("label")
+        const variable = document.createElement("label")
         variable.className = "variable-text"
         variable.innerHTML = `${name}:${value}`
         document.getElementById("debug").appendChild(variable)
     }
     static displayVariables = () =>{
-        if (this.storageSelected){
+        if (this.storageSelected || this.editmode){
             return
         }
+
+        let variables = core.getProcessor(this.curProcessor).variables
+        let variables_name = Object.keys(variables)
+        let variables_len = variables_name.length
         document.getElementById("debug").innerHTML = ""
-        for (const variable in core.getProcessor(this.curProcessor).variables) {
-            this.createVariable(variable,core.getProcessor(this.curProcessor).variables[variable])
+        for (let i = 0; i < variables_len; i++) {
+            this.createVariable(variables_name[i],variables[variables_name[i]])
         }
     }
     static displayStorageVariables = () =>{
@@ -137,24 +141,17 @@ class editor{
         });
         input.addEventListener("keydown",(e)=>{
             if (e.key !== "Escape") return
-            editor.toggleEditMode()
+            this.toggleEditMode()
         })
         document.getElementById("code").appendChild(input)
         document.querySelector("#code-input").focus()
     }
     static displayCurInstruction = (index) =>{
-        var instructions_dirty = document.getElementById("code").children
-        var instructions_clean = []
-        for (var i = 0; i < instructions_dirty.length; i++) {
-            instructions_clean.push(instructions_dirty[i])
+        const instructions = document.getElementById("code").children
+        if (this.prevInstruction){
+            this.prevInstruction.classList.remove("highlighten")
         }
-        for (let i = 0; i < instructions_clean.length; i++) {
-            if (i==index){
-                instructions_clean[i].classList.add("highlighten")
-                instructions_clean[i].scrollIntoViewIfNeeded()
-            }else{
-                instructions_clean[i].classList.remove("highlighten")
-            }
-        }
+        instructions[index].classList.add("highlighten")
+        this.prevInstruction = instructions[index]
     }
 }

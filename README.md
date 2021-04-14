@@ -18,6 +18,7 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 - Built in editor
 - Debug info
 - Execution control
+- Processors can run at any speed, even faster than in game use `core.getProcessor(*id*).setSpeed(*speed*)`
 
 ### FAQ
 - Hover over "+" button to create new processors, displays, etc....
@@ -25,6 +26,7 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 - Click on memory bank to open it in memory view
 - Right click on any device to delete it
 - Click on the line number to add a breakpoint
+- Create processor with the same id as existing to set the speed without console
 
 ### Suported instructions
 - `print` - full support
