@@ -171,7 +171,7 @@ class core {
     static createProcessor = (instructions,id, speed) =>{
         if (this.getProcessor(id)) {
             logger.warn("Trying to create processor with taken id updating speed instead") 
-            this.getProcessor(id).setSpeed(1000/speed)
+            this.getProcessor(id).setSpeed(speed)
             return this.getProcessor(id)
         }
         let btn = createProcessorBtn(id)

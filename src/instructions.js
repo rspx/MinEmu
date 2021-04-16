@@ -89,6 +89,9 @@ class InstructionHandler{
         }catch(err){
             logger.warn(`Trying to get ${args[2]} of unexisting ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
         }
+        if (editor.curProcessor == processor.id && !editor.editmode){
+            editor.displayVariables()
+        }
     }
     static control = (args,processor) => {
         //control enabled target value 0 0 0
@@ -285,6 +288,9 @@ class InstructionHandler{
             default:
                 logger.warn(`Unrecognized op operator "${args[0]}" @ processors${processor.id} instruction ${processor.curInstrucion}`)
                 break
+        }
+        if (editor.curProcessor == processor.id && !editor.editmode){
+            editor.displayVariables()
         }
     }
 }
