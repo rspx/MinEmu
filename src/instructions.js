@@ -2,7 +2,7 @@ const getLastCharacter = (text) =>{
     return text[text.length-1]
 }
 const parseArgument = (text,processor) =>{
-    if (typeof(text) == "undefined")return null
+    if (typeof(text) == "undefined") return null
     //Parse devices variable
     for (let i = 0; i < core.suportedDevices.length; i++) {
         if (text.includes(core.suportedDevices[i])){
@@ -11,6 +11,10 @@ const parseArgument = (text,processor) =>{
             }
             return core.getDevice(text)
         }
+    }
+    //Parse constants 
+    if (Constants.parse(text,processor)) {
+        return Constants.parse(text,processor)
     }
     //Parse properies
     if (text[0] == "@"){
@@ -46,9 +50,7 @@ class InstructionHandler{
     }
     static set = (args,processor) =>{
         processor.variables[args[0]] = parseArgument(args[1],processor)
-        if (editor.curProcessor == processor.id && !editor.editmode){
-            editor.displayVariables()
-        }
+        editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
     }
     static drawflush = (args,processor) =>{
         if (!parseArgument(args[0],processor)){
@@ -89,9 +91,7 @@ class InstructionHandler{
         }catch(err){
             logger.warn(`Trying to get ${args[2]} of unexisting ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
         }
-        if (editor.curProcessor == processor.id && !editor.editmode){
-            editor.displayVariables()
-        }
+        editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
     }
     static control = (args,processor) => {
         //control enabled target value 0 0 0
@@ -289,8 +289,6 @@ class InstructionHandler{
                 logger.warn(`Unrecognized op operator "${args[0]}" @ processors${processor.id} instruction ${processor.curInstrucion}`)
                 break
         }
-        if (editor.curProcessor == processor.id && !editor.editmode){
-            editor.displayVariables()
-        }
+        editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
     }
 }

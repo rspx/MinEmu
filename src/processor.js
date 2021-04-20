@@ -17,9 +17,11 @@ class Processor extends device {
     }
     executeInstruction = (instruction,parameters) =>{
         if (instruction == ""){return}
-        if (editor.curProcessor == this.id && !editor.editmode) {
+        editor.curProcessor == this.id && !editor.editmode &&(
             editor.displayCurInstruction(this.curInstrucion)
-        }
+        )
+            
+        
         if (!(instruction in InstructionHandler)) {
             logger.warn(`Unknown instruction:"${instruction}"`)
             return
@@ -36,7 +38,9 @@ class Processor extends device {
             this.running = false
             return
         }
-        if (typeof(this.instructions[this.curInstrucion]) == "undefined") this.curInstrucion = 0
+        typeof(this.instructions[this.curInstrucion]) == "undefined" && (
+            this.curInstrucion = 0
+        )
         let instruction = this.instructions[this.curInstrucion].split(" ")
         this.executeInstruction(instruction.shift(),instruction)
         this.curInstrucion++
@@ -56,5 +60,8 @@ class Processor extends device {
     }
     onEnabled = () => {
         this.btn.children[0].innerText = "processor"+this.id
+    }
+    toString = () =>{
+        return "logic-processor"
     }
 }

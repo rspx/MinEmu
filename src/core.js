@@ -118,11 +118,10 @@ const runFunction = () =>{
     const processos_len = core.processors.length
     for (let i = 0; i < processos_len; i++) {
         const processor =  processors[i]
-        if (performance.now() - processor.last_tick >= processor.speed && processor.running){
-            setZeroTimeout(processor.tick)
+        processor.running && performance.now() - processor.last_tick >= processor.speed && (
+            setZeroTimeout(processor.tick),
             processor.last_tick = performance.now()
-            // funcCount++
-        }
+        )
     }
     setZeroTimeout(runFunction)
 }

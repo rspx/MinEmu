@@ -7,9 +7,9 @@ class storage {
         this.values = []
     }
     updateDebug = () =>{
-        if (editor.storageSelected == this.id && editor.storageType == this.type){
+        editor.storageSelected == this.id && editor.storageType == this.type && (
             editor.displayStorageVariables()
-        }
+        )
     }
     write = (adress,value) =>{
         if (adress>this.size){

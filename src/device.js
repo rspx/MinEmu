@@ -52,12 +52,12 @@ class device {
                     return true
                 }
                 this.properties[i].value = value
-                if (property == "enabled" && value == 0){
+                property == "enabled" && value == 0 && (
                     this.onDisable()
-                }
-                if (property == "enabled" && value == 1){
+                )
+                property == "enabled" && value == 1 && (
                     this.onEnabled()
-                }
+                )
                 return true
             }
         }
