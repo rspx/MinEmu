@@ -2,11 +2,17 @@ class editor{
     static curProcessor = false
     static storageSelected = false
     static storageType = false
+    static virtualDeviceSelected = false
+    static virtualDeviceName = false
     static editmode = false
     static prevInstruction = document.body
     static selectProcessor = (id) =>{
         if (this.curProcessor){
             this.unhighlightProcessor(this.curProcessor)
+        }
+        if (this.virtualDeviceSelected){
+            this.virtualDeviceSelected = false
+            this.virtualDeviceName = false
         }
         if (id == this.curProcessor || !id){
             this.curProcessor = false
@@ -38,6 +44,19 @@ class editor{
         this.storageSelected = id
         this.storageType = type
         this.displayStorageVariables()
+    }
+    static selectVirtualDevice = (id,name) =>{
+        if (this.storageSelected){
+            this.storageSelected = false
+            this.storageType = false
+        }
+        if (this.curProcessor){
+            this.curProcessor = false
+        }
+        this.virtualDeviceSelected = id
+        this.virtualDeviceName = name
+        document.getElementById("debug").innerHTML = ""
+        this.displayProperties()
     }
     static highlightProcessor = (id)=>{
         core.getProcessor(id).btn.classList.add("selected")
@@ -153,5 +172,48 @@ class editor{
         )
         instructions[index].classList.add("highlighten")
         this.prevInstruction = instructions[index]
+    }
+    static changePropertie = (name,value) =>{
+
+    }
+    static createPropertie = (name,value) =>{
+        let container = document.createElement("div")
+        container.className = "propertie-line"
+        let propname = document.createElement("label")
+        propname.className = "propertie-name"
+        propname.innerText = name
+
+        let textarea = document.createElement("textarea")
+        textarea.className = "properie-textarea"
+        textarea.innerText = value
+        textarea.onkeydown = (e) => {
+            if (e.keyCode == 13) { e.preventDefault(); }
+        };
+        textarea.oninput = (e) =>{
+            let device = core.getVirtualDevice(this.virtualDeviceName,this.virtualDeviceSelected)
+            if (!device.propertyExists(name)){
+                return
+            }
+            let val = textarea.value
+            for (let i = 0; i < device.properties.length; i++) {
+                if (device.properties[i].name !== name) continue 
+                if (val[val.length-1] == '"' && val[0] == '"'){
+                    device.properties[i].value = val.slice(1).slice(0,-1)
+                    return
+                }
+                device.properties[i].value = parseInt(val)
+            }
+        }
+        container.appendChild(propname)
+        container.appendChild(textarea)
+        document.getElementById("code").appendChild(container)
+    }
+    static displayProperties = () =>{
+        document.getElementById("code").innerHTML = ""
+        let device = core.getVirtualDevice(this.virtualDeviceName,this.virtualDeviceSelected)
+        if (!device) return
+        device.properties.forEach(propertie => {
+            this.createPropertie(propertie.name,propertie.value,false)
+        });
     }
 }

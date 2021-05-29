@@ -246,3 +246,16 @@ img{
 .dropdown-content p{
     background-color: red;
 }
+.propertie-line{
+    display: inline-flex;
+}
+.properie-textarea{
+    height: 20px;
+    resize: none;
+    overflow-y: hidden;
+    margin-left: 15px;
+}
+.propertie-name{
+    color: #bbb;
+    text-align: center;
+}

@@ -132,6 +132,7 @@ class core {
     static switches = []
     static memcells = []
     static membanks = []
+    static virtualDevices = []
     static threadRunning = false
     static suportedDevices = ["display","processor","cell","bank","switch"]
     static createDrawBuffer = (size,color) =>{
@@ -299,10 +300,19 @@ class core {
                     case "switch":
                         return this.getSwitch(parseInt(deviceId,10))
                     default :
-                        logger.log("Trying to get unknown device")
+                        let device = this.getVirtualDevice(deviceName,deviceId)
+                        if (device) return device
+                        logger.log(`Trying to get unknown device "${deviceName}"`)
                         return false
                 }
             }
+        }
+    }
+    static getVirtualDevice(name,id){
+        for (let i = 0; i < this.virtualDevices.length; i++) {
+            if (this.virtualDevices[i].name == name && this.virtualDevices[i].id == id) {
+                return device = core.virtualDevices[i]
+            } 
         }
     }
     static runProcessor = (id) => {

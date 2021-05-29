@@ -49,6 +49,7 @@ class device {
         for (let i = 0; i < this.properties.length; i++) {
             if (this.properties[i].name == property){
                 if (this.properties[i].value == value){
+                    this.onPropertieChanged(property,value)
                     return true
                 }
                 this.properties[i].value = value
@@ -62,6 +63,9 @@ class device {
             }
         }
         return false
+    }
+    onPropertieChanged = (name,value) =>{
+
     }
     onDisable = () => {
 
