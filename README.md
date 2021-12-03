@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img  title="An Mindustry Logic Emulator" src="https://i.ibb.co/Jd2ggdC/PKSQzOr.jpg" width="750"> <br />
+  <img  title="An Mindustry Logic Emulator" src="https://i.ibb.co/HpL19Jk/2021-12-03-22-57-52.gif" width="750"> <br />
   An Mindustry Logic Emulator
 </h1>
 <h4 align="center">
@@ -43,5 +43,5 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 - `sensor` - partial support(beta)
 
 ### Showcase
-![](https://i.ibb.co/2MDySpg/2021-04-07-22-35-10.gif)
-![](https://i.ibb.co/WWrR52g/2021-04-07-22-32-06.gif)
+![](https://i.ibb.co/bsW2LKR/2021-12-03-23-13-49.gif)
+![](https://i.ibb.co/HT5QKp0/2021-12-03-23-11-29.gif)
