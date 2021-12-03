@@ -32,6 +32,10 @@ class fs{
                 case "switch":
                     core.createSwitch(device.id)
                     break
+                case "virtual":
+                    core.createVirtualDevice(device.id,device.name,device.image,[])
+                    core.getVirtualDevice(device.name,device.id).properties = device.properties
+                    break
                 default:
                     console.warn("Trying to load unknown device ",device)
                     break
@@ -86,6 +90,15 @@ class fs{
             devices.push({
                 "type":"switch",
                 "id":Switch.id
+            })
+        })
+        core.virtualDevices.forEach(virtualDevice=>{
+            devices.push({
+                "type":"virtual",
+                "name":virtualDevice.name,
+                "image":virtualDevice.image,
+                "id":virtualDevice.id,
+                "properties":virtualDevice.properties,
             })
         })
         localStorage.setItem("settings",JSON.stringify(settings))

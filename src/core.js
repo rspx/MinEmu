@@ -168,6 +168,10 @@ class core {
         this.displays.push(new Display(size,id,displayElement))
         return this.getDisplay(id)
     }
+    static createVirtualDevice(id,name,image,properites){
+        properites = properites?properites:[]
+        this.virtualDevices.push(new virtualDevice(id,properites,name,image))
+    }
     static createProcessor = (instructions,id, speed) =>{
         if (this.getProcessor(id)) {
             logger.warn("Trying to create processor with taken id updating speed instead") 
@@ -221,6 +225,19 @@ class core {
                     editor.selectProcessor(false)
                 }
                 processor.btn.remove()
+                return false
+            }
+            return true
+        })
+    }
+    static removeVirtualDevice = (id,name) =>{
+        core.virtualDevices = core.virtualDevices.filter(virtualDevice=>{
+            if (virtualDevice.id == id && virtualDevice.name == name){
+                console.log(virtualDevice)
+                if (editor.virtualDeviceSelected == id && editor.virtualDeviceName == name){
+                    editor.selectProcessor(false)
+                }
+                virtualDevice.btn.remove()
                 return false
             }
             return true

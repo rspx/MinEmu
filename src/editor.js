@@ -11,6 +11,7 @@ class editor{
             this.unhighlightProcessor(this.curProcessor)
         }
         if (this.virtualDeviceSelected){
+            this.unhighlightVirtualDevice(this.virtualDeviceSelected,this.virtualDeviceName)
             this.virtualDeviceSelected = false
             this.virtualDeviceName = false
         }
@@ -51,10 +52,12 @@ class editor{
             this.storageType = false
         }
         if (this.curProcessor){
+            this.unhighlightProcessor(this.curProcessor)
             this.curProcessor = false
         }
         this.virtualDeviceSelected = id
         this.virtualDeviceName = name
+        this.highlightVirtualDevice(id,name)
         document.getElementById("debug").innerHTML = ""
         this.displayProperties()
     }
@@ -63,6 +66,12 @@ class editor{
     }
     static unhighlightProcessor = (id)=>{
         core.getProcessor(id).btn.classList.remove("selected")
+    }
+    static highlightVirtualDevice = (id,name) =>{
+        core.getVirtualDevice(name,id).btn.classList.add("selected2")
+    }
+    static unhighlightVirtualDevice = (id,name) =>{
+        core.getVirtualDevice(name,id).btn.classList.remove("selected2")
     }
     static updateBtns = () =>{
         if (this.curProcessor === false) return
@@ -102,7 +111,7 @@ class editor{
     static displayCode = () =>{
         document.getElementById("code").innerHTML = ""
         for (let i = 0; i <  core.getProcessor(this.curProcessor).instructions.length; i++) {
-            this.createLine(i,core.getProcessor(this.curProcessor).instructions[i],core.getProcessor(this.curProcessor).breakpoints[i])
+            this.createLine(i+1,core.getProcessor(this.curProcessor).instructions[i],core.getProcessor(this.curProcessor).breakpoints[i])
         }
     }
     static stepInstruction = () =>{

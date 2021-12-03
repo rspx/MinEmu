@@ -4,7 +4,6 @@ class virtualDevice extends device {
         this.name = name
         this.image = image
         this.btn = this.createBtn(name,image,id)
-        core.virtualDevices.push(this)
         for (let i = 0; i < core.suportedDevices.length; i++) {
             if (core.suportedDevices[i] == name){
                 return
@@ -27,6 +26,14 @@ class virtualDevice extends device {
         document.getElementById("devices").appendChild(container)
         container.addEventListener("click", (e) => {
            editor.selectVirtualDevice(this.id,this.name)
+        })
+        container.addEventListener("contextmenu",(e)=>{
+            //To be improved!
+            e.preventDefault()
+            if (!confirm(`Are you sure you want to delete ${name} ${id} ?`)){
+                return
+            }
+            core.removeVirtualDevice(id,name)
         })
         return container
     }
