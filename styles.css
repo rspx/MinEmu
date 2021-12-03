@@ -1,5 +1,11 @@
+@font-face {
+    font-family: 'Mindustry';
+    src: url('resources/mindustry.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
 *{
-    font-family: 'Nunito';
+    font-family: 'Mindustry';
     box-sizing: border-box;
 }
 body{
@@ -28,25 +34,6 @@ header{
     align-items: center;
     padding-left: 1em;
     gap: 1em;
-}
-header button{
-    user-select: none;
-    border-radius: 5px;
-    border: none;
-    background-color: rgba(0,0,0,0.5);
-    color: #bbb;
-    outline: none;
-    padding: 0.3em;
-    cursor: pointer;
-}
-header button:hover{
-    border-radius: 5px;
-    border: none;
-    background-color: rgba(0, 0, 0, 1);
-    color: #bbb;
-    outline: none;
-    padding: 0.3em;
-    cursor: pointer;
 }
 header .back-btn{
     border-radius: 5px;
@@ -122,7 +109,7 @@ header .back-btn{
     flex-direction: column;
     border: 1px solid #353535;
 }
-.editor_tools{
+.editor-tools{
     width: 100%;
     align-items: center;
     user-select: none;
@@ -130,12 +117,13 @@ header .back-btn{
     background-color: #353535;
     box-shadow: 0 0 10px rgb(0 0 0 / 20%);
 }
-.editor_tools .btn{
-    width: 2em;
-    height: 90%;
+.editor-tools .btn{
+    width: 1.7vw;
+    margin-left: 10px;
+    margin-top: 0.7vh;
     cursor: pointer;
 }
-.editor_tools .btn:hover{
+.editor-tools .btn:hover{
     background-color: rgba(0,0,0,0.3);
 }
 #code{
@@ -185,6 +173,7 @@ img{
     height: 100%;
 }
 .instruction{
+    font-family: "Source Code Pro";
     color: #bbb;
     padding-left: 5px;
     height: 20px;
@@ -192,10 +181,10 @@ img{
     text-align: center;
 }
 .line-number{
+    font-family: "Source Code Pro";
     user-select: none;
     color: #bbb;
     width: 32px;
-    height: 20px;
     display: block;
     text-align: center;
 }
@@ -211,6 +200,7 @@ img{
     margin: 10px;
 }
 .code-input{
+    font-family: "Source Code Pro";
     width: 100%;
     resize: none;
     outline: none;
@@ -219,32 +209,36 @@ img{
     color: #bbb;
 }
 .dropdown {
-   position: absolute;
-   right: 15px;
-   display: inline-block;
+    width: 2%;
+    padding-top: 0.5%;
+    display: inline-block;
 }
 .dropdown-btn{
-    width: 40px;
-    height: 40px;
+    width: 75%;
 }
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #232323;
-  width: 160px;
-  left: -300%;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
+  width: 180px;
   z-index: 1;
 }
-.dropdown-content button{
-    margin-top: 5px;
-}
 .dropdown:hover .dropdown-content {
-  display: block;
+    display: block;
 }
-.dropdown-content p{
-    background-color: red;
+.dropdown-content button{
+    margin-top: 5%;
+    padding: 4%;
+    user-select: none;
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(0,0,0,0.5);
+    color: #bbb;
+    outline: 1px solid #bbb;
+    padding: 0.3em;
+    cursor: pointer;
 }
 .propertie-line{
     display: inline-flex;

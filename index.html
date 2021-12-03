@@ -17,13 +17,12 @@
 	<link rel="stylesheet" href="styles.css">
 	<link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Source Code Pro&display=swap" rel="stylesheet">
 </head>
 <body onload = "fs.load()">
 	<header>
-		<a href = "https://mindustryschematics.com/" class = "back-btn">Mindustry schematics</a>
 		<div class="dropdown">
-			<button class = "dropdown-btn">+</button>
+			<img id="menu" class="dropdown-btn" src="resources/menu.svg">
 			<div class="dropdown-content">
 				<button onclick="addProcessor()">New Processor</button>
 				<button onclick="addDisplay()">New Display</button>
@@ -32,11 +31,12 @@
 				<button onclick="addSwitch()">New Switch</button>
 			</div>
 		  </div>
+		  <a href = "https://mindustryschematics.com/" class = "back-btn">Mindustry schematics</a>
 	</header>
 	<div id="displays"></div>
 	<div id="devices"></div>
 	<div id="editor">
-		<div class="editor_tools">
+		<div class="editor-tools">
 			<img id="play-pause" onclick="editor.toggleProcessor()" class="btn" src="resources/play.svg">
 			<img id="next" onclick="editor.stepInstruction()" class="btn" src="resources/next.svg">
 			<img id="edit" onclick="editor.toggleEditMode()" class="btn" src="resources/edit.svg">
