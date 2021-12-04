@@ -14,6 +14,7 @@ class Processor extends device {
         this.breakpoints = []
         this.hitbreakpoint = false
         this.btn = this.createBtn()
+        core.processors.push(this)
     }
     createBtn = () =>{
         const container = document.createElement("div")
@@ -35,7 +36,7 @@ class Processor extends device {
             if (!confirm(`Are you sure you want to delete processor ${this.id} ?`)){
                 return
             }
-            core.removeProcessor(this.id)
+            core.removeDevice("processor",this.id)
         })
         return container
     }
@@ -61,6 +62,7 @@ class Processor extends device {
         if (typeof(this.instructions) == "undefined" || !this.getProperty("@enabled")) return false
         if (this.breakpoints[this.curInstrucion] && !this.skipBreakPoint) {
             this.running = false
+            editor.updateBtns()
             return
         }
         typeof(this.instructions[this.curInstrucion]) == "undefined" && (

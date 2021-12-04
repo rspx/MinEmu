@@ -14,27 +14,30 @@ class fs{
         devices.forEach(device => {
             switch (device.type){
                 case "processor":
-                    core.createProcessor("",device.id)
-                    core.getProcessor(device.id).instructions = device.instructions
-                    core.getProcessor(device.id).speed = device.speed?device.speed:1000/120
-                    core.getProcessor(device.id).running = device.running
-                    core.getProcessor(device.id).breakpoints = device.breakpoints?device.breakpoints:[]
+                    let p = new Processor("",device.id)
+                    p.instructions = device.instructions
+                    p.speed = device.speed?device.speed:1000/120
+                    p.running = device.running
+                    p.breakpoints = device.breakpoints?device.breakpoints:[]
                     break
                 case "display":
-                    core.createDisplay(device.id,device.size)
+                    new Display(device.size,device.id)
                     break
                 case "bank":
-                    core.createMemBank(device.id)
+                    new bank(device.id)
                     break
                 case "cell":
-                    core.createMemCell(device.id)
+                    new cell(device.id)
                     break
                 case "switch":
-                    core.createSwitch(device.id)
+                    new Switch(device.id)
+                    break
+                case "message":
+                    new Message(device.id)
                     break
                 case "virtual":
-                    core.createVirtualDevice(device.id,device.name,device.image,[])
-                    core.getVirtualDevice(device.name,device.id).properties = device.properties
+                    let d = new virtualDevice(device.id,[],device.name,device.image,)
+                    d.properties = device.properties
                     break
                 default:
                     console.warn("Trying to load unknown device ",device)
@@ -57,49 +60,58 @@ class fs{
             "bls":core.noBorder
         }
         let devices = []
-        core.processors.forEach(processor=>{
-            devices.push({
-                "type":"processor",
-                "id":processor.id,
-                "instructions":processor.instructions,
-                "speed":processor.speed,
-                "running":processor.running,
-                "breakpoints":processor.breakpoints?processor.breakpoints:[]
-            })
-        })
-        core.displays.forEach(display=>{
-            devices.push({
-                "type":"display",
-                "id":display.id,
-                "size":display.displaysize,
-            })
-        })
-        core.membanks.forEach(bank=>{
-            devices.push({
-                "type":"bank",
-                "id":bank.id
-            })
-        })
-        core.memcells.forEach(cell=>{
-            devices.push({
-                "type":"cell",
-                "id":cell.id
-            })
-        })
-        core.switches.forEach(Switch=>{
-            devices.push({
-                "type":"switch",
-                "id":Switch.id
-            })
-        })
-        core.virtualDevices.forEach(virtualDevice=>{
-            devices.push({
-                "type":"virtual",
-                "name":virtualDevice.name,
-                "image":virtualDevice.image,
-                "id":virtualDevice.id,
-                "properties":virtualDevice.properties,
-            })
+        core.devices.forEach(device=>{
+            switch (device.constructor.name.toLowerCase()){
+                case "processor":
+                    devices.push({
+                        "type":"processor",
+                        "id":device.id,
+                        "instructions":device.instructions,
+                        "speed":device.speed,
+                        "running":device.running,
+                        "breakpoints":device.breakpoints?device.breakpoints:[]
+                    })
+                    break
+                case "display":
+                    devices.push({
+                        "type":"display",
+                        "id":device.id,
+                        "size":device.displaysize,
+                    })
+                    break
+                case "switch":
+                    devices.push({
+                        "type":"switch",
+                        "id":device.id
+                    })
+                    break
+                case "bank":
+                    devices.push({
+                        "type":"bank",
+                        "id":device.id
+                    })
+                    break
+                case "cell":
+                    devices.push({
+                        "type":"cell",
+                        "id":device.id
+                    })
+                    break
+                case "message":
+                    devices.push({
+                        "type":"message",
+                        "id":device.id
+                    })
+                    break
+                default:
+                    devices.push({
+                        "type":"virtual",
+                        "name":device.name,
+                        "image":device.image,
+                        "id":device.id,
+                        "properties":device.properties,
+                    })
+            }
         })
         localStorage.setItem("settings",JSON.stringify(settings))
         localStorage.setItem("devices",JSON.stringify(devices))

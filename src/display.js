@@ -2,8 +2,9 @@ class Display{
     constructor(size,id){
         this.displaysize = size==80?80:176
         this.id = id
-        this.displayElement = this.createCanvas()
-        this.ctx = this.displayElement.children[1].getContext('2d')
+        this.btn = this.createCanvas()
+        this.ctx = this.btn.children[1].getContext('2d')
+        core.devices.push(this)
     }
     createCanvas = () =>{
       const container = document.createElement("div")
@@ -26,7 +27,7 @@ class Display{
           if (!confirm(`Are you sure you want to delete display ${this.id} ?`)){
               return
           }
-          core.removeDisplay(this.id)
+          core.removeDevice("display",this.id)
       })
       return container
   }

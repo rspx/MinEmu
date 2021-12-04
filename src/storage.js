@@ -5,6 +5,7 @@ class storage {
         this.size = size
         this.btn = this.createBtn()
         this.values = []
+        core.devices.push(this)
     }
     updateDebug = () =>{
         editor.storageSelected == this.id && editor.storageType == this.type && (
@@ -18,7 +19,7 @@ class storage {
         label.className = "device-name"
         label.innerText = "Memory "+this.type+this.id
         const img = document.createElement("img")
-        img.src = this.type == "Cell"?"resources/memory-cell.png":"resources/memory-bank.png"
+        img.src = this.type == "cell"?"resources/memory-cell.png":"resources/memory-bank.png"
         container.appendChild(label)
         container.appendChild(img)
         document.getElementById("devices").appendChild(container)
@@ -31,7 +32,7 @@ class storage {
            if (!confirm(`Are you sure you want to delete Memory ${this.type} ${this.id} ?`)){
                return
            }
-           core["removeMem"+this.type](id)
+           core.removeDevice(this.type,this.id)
         })
         return container
     }
@@ -64,13 +65,13 @@ class storage {
         return "memory-bank"
     }
 }
-class memcell extends storage {
+class cell extends storage {
     constructor(id){
-        super(id,"Cell",64)
+        super(id,"cell",64)
     }
 }
-class membank extends storage {
-    constructor(id,btn){
-        super(id,"Bank",512)
+class bank extends storage {
+    constructor(id){
+        super(id,"bank",512)
     }
 }

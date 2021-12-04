@@ -7,6 +7,7 @@ class device {
         "name":"enabled",
         "value":1,
         "readOnly":false})
+        core.devices.push(this)
     }
     propertyExists = (propertyname) => {
         for (let i = 0; i < this.properties.length; i++) {

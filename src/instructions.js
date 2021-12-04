@@ -3,15 +3,6 @@ const getLastCharacter = (text) =>{
 }
 const parseArgument = (text,processor) =>{
     if (typeof(text) == "undefined") return null
-    //Parse devices variable
-    for (let i = 0; i < core.suportedDevices.length; i++) {
-        if (text.includes(core.suportedDevices[i])){
-            if (!core.getDevice(text)){
-                return null
-            }
-            return core.getDevice(text)
-        }
-    }
     //Parse constants 
     if (Constants.parse(text,processor)) {
         return Constants.parse(text,processor)
@@ -38,7 +29,15 @@ const parseArgument = (text,processor) =>{
     //Check for boolean values
     if (text == "true") return 1
     if (text == "false") return 0
-    
+    //Parse devices variable
+    for (let i = 0; i < core.suportedDevices.length; i++) {
+        if (text.includes(core.suportedDevices[i])){
+            if (!core.getDevice(text)){
+                return null
+            }
+            return core.getDevice(text)
+        }
+    }
     if (typeof(processor.variables[text]) == "undefined"){
         return null
     }
@@ -70,7 +69,7 @@ class InstructionHandler{
         processor.printBuffer += parseArgument(arg,processor)
     }
     static printflush = (args,processor) =>{
-        console.log(`${args[0]}:${processor.printBuffer}`)
+        parseArgument(args[0],processor).setProperty("@text",processor.printBuffer)
         processor.printBuffer = "";
     }
     static write = (args,processor) =>{

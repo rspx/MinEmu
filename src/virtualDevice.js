@@ -33,7 +33,7 @@ class virtualDevice extends device {
             if (!confirm(`Are you sure you want to delete ${name} ${id} ?`)){
                 return
             }
-            core.removeVirtualDevice(id,name)
+            core.removeDevice(this.name,this.id)
         })
         return container
     }

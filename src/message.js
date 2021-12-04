@@ -21,6 +21,14 @@ class Message extends device {
         container.appendChild(label)
         container.appendChild(img)
         document.getElementById("devices").appendChild(container)
+        container.addEventListener("contextmenu",(e)=>{
+            //To be improved!
+            e.preventDefault()
+            if (!confirm(`Are you sure you want to delete message ${this.id} ?`)){
+                return
+            }
+            core.removeDevice("message",this.id)
+        })
         return container
     }
     toString = () =>{
@@ -28,7 +36,7 @@ class Message extends device {
     }
     onPropertieChanged = (name,value) =>{
         if (name == "text"){
-            f.btn.children[0].innerText = "Message"+this.id+"\n"+value
+            this.btn.children[0].innerText = "Message"+this.id+"\n"+value
         }
     }
 }

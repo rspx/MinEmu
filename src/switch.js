@@ -21,7 +21,7 @@ class Switch extends device {
         container.appendChild(img2)
         document.getElementById("devices").appendChild(container)
         container.addEventListener("click", (e) => {
-            core.getSwitch(this.id).toggle()
+            this.toggle()
          })
          container.addEventListener("contextmenu",(e)=>{
             //To be improved!
@@ -29,7 +29,7 @@ class Switch extends device {
             if (!confirm(`Are you sure you want to delete switch${this.id} ?`)){
                 return
             }
-            core.removeSwitch(this.id)
+            core.removeDevice("switch",this.id)
          })
         return container
     }
