@@ -62,11 +62,16 @@ class InstructionHandler{
         //processor.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize)
     }
     static print = (args,processor) =>{
-        processor.printBuffer = parseArgument(args[0],processor)
+        let arg = ""
+        args.forEach(arg_ => {
+            arg += arg_+" "
+        });
+        arg = arg.substring(0,arg.length-1)
+        processor.printBuffer += parseArgument(arg,processor)
     }
     static printflush = (args,processor) =>{
         console.log(`${args[0]}:${processor.printBuffer}`)
-        processor.printBuffer = null
+        processor.printBuffer = "";
     }
     static write = (args,processor) =>{
         //write input cell1 adress
@@ -90,6 +95,7 @@ class InstructionHandler{
             processor.variables[args[0]] = parseArgument(args[1],processor).getProperty(parseArgument(args[2],processor))
         }catch(err){
             logger.warn(`Trying to get ${args[2]} of unexisting ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
+            processor.variables[args[0]] = null
         }
         editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
     }

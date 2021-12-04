@@ -176,6 +176,7 @@ class editor{
     }
     static displayCurInstruction = (index) =>{
         const instructions = document.getElementById("code").children
+        if (instructions.length == 0 || instructions.length <= index) return
         this.prevInstruction && (
             this.prevInstruction.classList.remove("highlighten")
         )

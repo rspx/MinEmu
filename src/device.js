@@ -48,8 +48,9 @@ class device {
         }
         for (let i = 0; i < this.properties.length; i++) {
             if (this.properties[i].name == property){
-                if (this.properties[i].value == value){
+                if (this.properties[i].name != "enabled"){
                     this.onPropertieChanged(property,value)
+                    this.properties[i].value = value
                     return true
                 }
                 this.properties[i].value = value

@@ -1,5 +1,5 @@
 class Processor extends device {
-    constructor(instructions,id,btn, speed){
+    constructor(instructions,id, speed){
         super(id)
         this.variables = {}
         this.id = id
@@ -7,14 +7,39 @@ class Processor extends device {
         this.instructions = instructions
         this.speed = speed
         this.curInstrucion = 0
-        this.btn = btn
         this.last_tick = performance.now()
         this.color = new Color(0,0,0,255)
         this.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize)
         this.printBuffer = null
         this.breakpoints = []
         this.hitbreakpoint = false
+        this.btn = this.createBtn()
     }
+    createBtn = () =>{
+        const container = document.createElement("div")
+        container.className = "device"
+        const label = document.createElement("label")
+        label.className = "device-name"
+        label.innerText = "Processor"+this.id
+        const img = document.createElement("img")
+        img.src = "resources/logic-processor.png"
+        container.appendChild(label)
+        container.appendChild(img)
+        document.getElementById("devices").appendChild(container)
+        container.addEventListener("click", (e) => {
+            editor.selectProcessor(this.id)
+        })
+        container.addEventListener("contextmenu",(e)=>{
+            //To be improved!
+            e.preventDefault()
+            if (!confirm(`Are you sure you want to delete processor ${this.id} ?`)){
+                return
+            }
+            core.removeProcessor(this.id)
+        })
+        return container
+    }
+    
     executeInstruction = (instruction,parameters) =>{
         if (instruction == ""){return}
         editor.curProcessor == this.id && !editor.editmode &&(

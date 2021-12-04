@@ -146,7 +146,7 @@ header .back-btn{
     background-color: rgba(200, 50, 50, 0.5);
 }
 #debug{
-    overflow-y: scroll;
+    overflow-y: auto;
     flex: 1;
 }
 canvas {

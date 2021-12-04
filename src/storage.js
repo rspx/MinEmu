@@ -1,15 +1,39 @@
 class storage {
-    constructor (id,btn,type,size){
-        this.btn = btn
+    constructor (id,type,size){
         this.id = id
         this.type = type
         this.size = size
+        this.btn = this.createBtn()
         this.values = []
     }
     updateDebug = () =>{
         editor.storageSelected == this.id && editor.storageType == this.type && (
             editor.displayStorageVariables()
         )
+    }
+    createBtn = () =>{
+        const container = document.createElement("div")
+        container.className = "device"
+        const label = document.createElement("label")
+        label.className = "device-name"
+        label.innerText = "Memory "+this.type+this.id
+        const img = document.createElement("img")
+        img.src = this.type == "Cell"?"resources/memory-cell.png":"resources/memory-bank.png"
+        container.appendChild(label)
+        container.appendChild(img)
+        document.getElementById("devices").appendChild(container)
+        container.addEventListener("click", (e) => {
+           editor.selectStorage(this.id,this.type)
+        })
+        container.addEventListener("contextmenu",(e)=>{
+           //To be improved!
+           e.preventDefault()
+           if (!confirm(`Are you sure you want to delete Memory ${this.type} ${this.id} ?`)){
+               return
+           }
+           core["removeMem"+this.type](id)
+        })
+        return container
     }
     write = (adress,value) =>{
         if (adress>this.size){
@@ -41,12 +65,12 @@ class storage {
     }
 }
 class memcell extends storage {
-    constructor(id,btn){
-        super(id,btn,"Cell",64)
+    constructor(id){
+        super(id,"Cell",64)
     }
 }
 class membank extends storage {
     constructor(id,btn){
-        super(id,btn,"Bank",512)
+        super(id,"Bank",512)
     }
 }

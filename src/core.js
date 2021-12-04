@@ -1,106 +1,3 @@
-const createProcessorBtn = (id) =>{
-    const container = document.createElement("div")
-    container.className = "device"
-    const label = document.createElement("label")
-    label.className = "device-name"
-    label.innerText = "Processor"+id
-    const img = document.createElement("img")
-    img.src = "resources/logic-processor.png"
-    container.appendChild(label)
-    container.appendChild(img)
-    document.getElementById("devices").appendChild(container)
-    container.addEventListener("click", (e) => {
-        editor.selectProcessor(id)
-    })
-    container.addEventListener("contextmenu",(e)=>{
-        //To be improved!
-        e.preventDefault()
-        if (!confirm(`Are you sure you want to delete processor ${id} ?`)){
-            return
-        }
-        core.removeProcessor(id)
-    })
-    return container
-}
-const createStorageBtn = (type,id) =>{
-    const container = document.createElement("div")
-    container.className = "device"
-    const label = document.createElement("label")
-    label.className = "device-name"
-    label.innerText = "Memory "+type+id
-    const img = document.createElement("img")
-    img.src = type == "Cell"?"resources/memory-cell.png":"resources/memory-bank.png"
-    container.appendChild(label)
-    container.appendChild(img)
-    document.getElementById("devices").appendChild(container)
-    container.addEventListener("click", (e) => {
-       editor.selectStorage(id,type)
-    })
-    container.addEventListener("contextmenu",(e)=>{
-       //To be improved!
-       e.preventDefault()
-       if (!confirm(`Are you sure you want to delete Memory ${type} ${id} ?`)){
-           return
-       }
-       core["removeMem"+type](id)
-    })
-    return container
-}
-const createSwitchBtn = (id) =>{
-    const container = document.createElement("div")
-    container.className = "device"
-    const label = document.createElement("label")
-    label.className = "device-name"
-    label.innerText = "switch"+id
-    const img = document.createElement("img")
-    img.src = "resources/switch.png"
-    img.className = "Switch"
-    const img2 = document.createElement("img")
-    img2.src = "resources/switch-on.png"
-    img2.className = "switch-btn"
-    container.appendChild(label)
-    container.appendChild(img)
-    container.appendChild(img2)
-    document.getElementById("devices").appendChild(container)
-    container.addEventListener("click", (e) => {
-        core.getSwitch(id).toggle()
-     })
-     container.addEventListener("contextmenu",(e)=>{
-        //To be improved!
-        e.preventDefault()
-        if (!confirm(`Are you sure you want to delete switch${id} ?`)){
-            return
-        }
-        core.removeSwitch(id)
-     })
-    return container
-}
-const createCanvas = (size,id) =>{
-    const container = document.createElement("div")
-    container.className = "display"
-    const label = document.createElement("label")
-    label.className = "device-name"
-    label.innerText = "Display"+id
-    const canvas = document.createElement("canvas")
-    canvas.width = size
-    canvas.height = size
-    if (!core.noBorder){
-        canvas.classList.add("border")
-    }
-    container.appendChild(label)
-    container.appendChild(canvas)
-    document.getElementById("displays").appendChild(container)
-    container.addEventListener("contextmenu",(e)=>{
-        //To be improved!
-        e.preventDefault()
-        if (!confirm(`Are you sure you want to delete display ${id} ?`)){
-            return
-        }
-        core.removeDisplay(id)
-    })
-    return container
-}
-
 // Timing stuff
 // var funcCount = 0
 // tickCounter = () =>{
@@ -164,8 +61,7 @@ class core {
             logger.warn("Trying to create display with taken id") 
             return this.getDisplay(id)
         }
-        let displayElement = createCanvas(size,id)
-        this.displays.push(new Display(size,id,displayElement))
+        this.displays.push(new Display(size,id))
         return this.getDisplay(id)
     }
     static createVirtualDevice(id,name,image,properites){
@@ -178,8 +74,7 @@ class core {
             this.getProcessor(id).setSpeed(speed)
             return this.getProcessor(id)
         }
-        let btn = createProcessorBtn(id)
-        this.processors.push(new Processor(instructions.split("\n"),id,btn,1000/speed))
+        this.processors.push(new Processor(instructions.split("\n"),id,1000/speed))
         return this.getProcessor(id)
     }
     static createMemCell = (id) =>{
@@ -187,8 +82,7 @@ class core {
             logger.warn("Trying to create memcell with taken id") 
             return this.getMemCell(id)
         }
-        let btn = createStorageBtn("Cell",id)
-        this.memcells.push(new memcell(id,btn))
+        this.memcells.push(new memcell(id))
         return this.getMemCell(id)
     }
     static createMemBank = (id) =>{
@@ -196,8 +90,7 @@ class core {
             logger.warn("Trying to create membank with taken id") 
             return this.getMemBank(id)
         }
-        let btn = createStorageBtn("Bank",id)
-        this.membanks.push(new membank(id,btn))
+        this.membanks.push(new membank(id))
         return this.getMemBank(id)
     }
     static createSwitch = (id) =>{
@@ -205,8 +98,7 @@ class core {
             logger.warn("Trying to create switch with taken id") 
             return this.getSwitch(id)
         }
-        let btn = createSwitchBtn(id)
-        this.switches.push(new Switch(id,btn))
+        this.switches.push(new Switch(id))
         return this.getSwitch(id)
     }
     static removeDisplay = (id) =>{

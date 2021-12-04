@@ -1,10 +1,35 @@
 class Display{
-    constructor(size,id,displayElement){
+    constructor(size,id){
         this.displaysize = size==80?80:176
         this.id = id
-        this.displayElement = displayElement
-        this.ctx = displayElement.children[1].getContext('2d')
+        this.displayElement = this.createCanvas()
+        this.ctx = this.displayElement.children[1].getContext('2d')
     }
+    createCanvas = () =>{
+      const container = document.createElement("div")
+      container.className = "display"
+      const label = document.createElement("label")
+      label.className = "device-name"
+      label.innerText = "Display"+this.id
+      const canvas = document.createElement("canvas")
+      canvas.width = this.displaysize
+      canvas.height = this.displaysize
+      if (!core.noBorder){
+          canvas.classList.add("border")
+      }
+      container.appendChild(label)
+      container.appendChild(canvas)
+      document.getElementById("displays").appendChild(container)
+      container.addEventListener("contextmenu",(e)=>{
+          //To be improved!
+          e.preventDefault()
+          if (!confirm(`Are you sure you want to delete display ${this.id} ?`)){
+              return
+          }
+          core.removeDisplay(this.id)
+      })
+      return container
+  }
     displayBuff = (buffer) =>{
       this.ctx.putImageData(new ImageData(buffer.buffer,buffer.size,buffer.size),0,0)
     }
