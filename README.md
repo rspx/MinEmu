@@ -31,8 +31,8 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 ### Suported instructions
 - `print` - full support
 - `printflush` - full suport
-- `draw` - only `color`, `rect`,`clear`
-- `drawflush` - partial support (bugs may occur when using more than 1 processor on a display)
+- `draw` - only `color`, `rect`,`clear`,`line`
+- `drawflush` - partial support
 - `set` - full support
 - `jump` - full support
 - `end` - full support

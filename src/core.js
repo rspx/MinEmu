@@ -28,17 +28,6 @@ class core {
     static devices = []
     static threadRunning = false
     static suportedDevices = ["display","processor","cell","bank","switch","message"]
-    static createDrawBuffer = (size,color) =>{
-        const arr = new Uint8ClampedArray(size*size*4);
-        color = color?color:new Color(89,89,102)
-        for (let i = 0; i < arr.length; i += 4) {
-          arr[i + 0] = color.r; 
-          arr[i + 1] = color.g; 
-          arr[i + 2] = color.b; 
-          arr[i + 3] = color.a; 
-        }
-        return {"buffer":arr,"size":size}
-    }
     static stopThread = () =>{
         this.threadRunning = false
     }

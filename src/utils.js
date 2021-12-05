@@ -6,8 +6,13 @@ window.addEventListener('beforeunload', (e) => {
   });
 class Color {
     constructor(r,g,b,a){
-        a = a?a:255
-        return {"r":r,"g":g,"b":b,"a":a}
+        this.r = r
+        this.g = g
+        this.b = b
+        this.a = a?a:255
+    }
+    toRgb = () =>{
+        return `rgba(${this.r},${this.g},${this.b},${this.a})`
     }
 }
 const addProcessor = () => {

@@ -8,9 +8,8 @@ class Processor extends device {
         this.speed = speed
         this.curInstrucion = 0
         this.last_tick = performance.now()
-        this.color = new Color(255,255,255,255)
-        this.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize)
-        this.printBuffer = null
+        this.drawCommands = []
+        this.printBuffer = ""
         this.breakpoints = []
         this.hitbreakpoint = false
         this.btn = this.createBtn()
