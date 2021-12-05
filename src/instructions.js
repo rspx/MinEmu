@@ -69,7 +69,12 @@ class InstructionHandler{
         processor.printBuffer += parseArgument(arg,processor)
     }
     static printflush = (args,processor) =>{
-        parseArgument(args[0],processor).setProperty("@text",processor.printBuffer)
+        let msg = parseArgument(args[0],processor)
+        if (!msg){
+            logger.warn(`Trying to print to unexisting ${args[1]} @ processor ${processor.id} instrucation ${processor.curInstrucion}`)
+            return
+        }
+        msg.setProperty("@text",processor.printBuffer)
         processor.printBuffer = "";
     }
     static write = (args,processor) =>{
