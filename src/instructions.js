@@ -52,13 +52,16 @@ class InstructionHandler{
         editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
     }
     static drawflush = (args,processor) =>{
-        if (!parseArgument(args[0],processor)){
-            logger.warn(`Trying to send draw buffer to non existant display ${args[0]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
+        let display = parseArgument(args[0],processor)
+        if (!display){
+            logger.warn(`Trying to send draw commands to non existant display ${args[0]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
             return
         }
-        //logger.log(`Flushing ${args[0]} at instruction ${processor.curInstrucion}`)
-        parseArgument(args[0],processor).displayBuff(processor.drawbuffer)
-        //processor.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize)
+        processor.drawCommands.forEach(cmd=>{
+            display.commands.push(cmd)
+        })
+        display.executeCommands()
+        processor.drawCommands = []
     }
     static print = (args,processor) =>{
         let arg = ""
@@ -113,39 +116,11 @@ class InstructionHandler{
         }
     } 
     static draw = (args,processor) => {
-        switch(args[0]){
-            case "color":
-                processor.color = new Color(parseArgument(args[1],processor),parseArgument(args[2],processor),parseArgument(args[3],processor),parseArgument(args[4],processor))
-                break
-            case "rect":
-                let x_start = parseArgument(args[1],processor)
-                let x_end = x_start +parseArgument(args[3],processor)
-                let y_start = parseArgument(args[2],processor)
-                let y_end = parseArgument(args[2],processor)+ parseArgument(args[4],processor)
-                for (let x = x_start; x < x_end; x++) {
-                    for (let y = y_start; y <y_end; y++) {
-                        try{
-                            var pos = (y * processor.drawbuffer.size + x) * 4; // position in buffer based on x and y
-                            processor.drawbuffer.buffer[pos  ] = processor.color.r           // some R value [0, 255]
-                            processor.drawbuffer.buffer[pos+1] = processor.color.g;           // some G value
-                            processor.drawbuffer.buffer[pos+2] = processor.color.b;           // some B value
-                            processor.drawbuffer.buffer[pos+3] = processor.color.a;  
-                        }catch (err){
-                            logger.warn("Trying to draw outside of buffer "+err)
-                        }
-                    }
-                }
-                break
-            case "line":
-                //draw line xstart ystart xend yend 0 0
-                break
-            case "clear":
-                processor.drawbuffer = core.createDrawBuffer(core.defualtDisplaySize,new Color(parseArgument(args[1],processor),parseArgument(args[2],processor),parseArgument(args[3],processor),parseArgument(args[4],processor)))
-                break
-            default:
-                logger.warn(`Unknow parameter for draw ${args[0]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
-                break
+        let cmd = [args[0]]
+        for (let i=1;i<args.length;i++){
+            cmd.push(parseArgument(args[i],processor))
         }
+        processor.drawCommands.push(cmd)
     }
     static jump = (args,processor) =>{
         if (parseInt(args[0]) == -1) return
