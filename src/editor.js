@@ -7,6 +7,10 @@ class editor{
     static editmode = false
     static prevInstruction = document.body
     static selectProcessor = (id) =>{
+        if (!core.getDevice("processor",id)){
+            this.curProcessor = false
+            return
+        }
         if (this.curProcessor){
             this.unhighlightProcessor(this.curProcessor)
         }
