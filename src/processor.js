@@ -9,6 +9,7 @@ class Processor extends device {
         this.curInstrucion = 0
         this.last_tick = performance.now()
         this.drawCommands = []
+        this.printBuffer = ""
         this.breakpoints = []
         this.hitbreakpoint = false
         this.btn = this.createBtn()
