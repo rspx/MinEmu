@@ -59,10 +59,12 @@ class core {
     static removeDevice(name,id){
         this.devices = this.devices.filter(device=>{
             if (device.constructor.name.toLowerCase() == "virtualDevice" || device.name == name && device.id == id){
+                editor.onBeforDeviceRemoved(device)
                 device.btn.remove()
                 return false
             }
             if (device.constructor.name.toLowerCase() == name && device.id == id){
+                editor.onBeforDeviceRemoved(device)
                 device.btn.remove()
                 return false
             }

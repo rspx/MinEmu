@@ -1,98 +1,113 @@
 class editor{
-    static curProcessor = false
-    static storageSelected = false
-    static storageType = false
-    static virtualDeviceSelected = false
-    static virtualDeviceName = false
+    static mainDevice = false
+    static altDevice = false
     static editmode = false
-    static prevInstruction = document.body
-    static selectProcessor = (id) =>{
-        if (!core.getDevice("processor",id)){
-            this.curProcessor = false
+    static prevInstruction = false
+    static onBeforDeviceRemoved = (device) =>{
+        if (this.mainDevice.name == device.name && this.mainDevice.id == device.id){
+            if (this.mainDevice.id == device.id){
+                this.selectMainDevice(device)
+            }
+        }
+        if (this.altDevice.name == device.name && this.altDevice.id == device.id){
+            this.selectAltDevice(device)
+            this.altDevice = false
+        }
+    }
+    static selectMainDevice(device){
+        if (!device){
+            this.mainDevice = false
             return
         }
-        if (this.curProcessor){
-            this.unhighlightProcessor(this.curProcessor)
+        if (this.mainDevice){
+            this.unhighlightMainDevice()
         }
-        if (this.virtualDeviceSelected){
-            this.unhighlightVirtualDevice(this.virtualDeviceSelected,this.virtualDeviceName)
-            this.virtualDeviceSelected = false
-            this.virtualDeviceName = false
-        }
-        if (id == this.curProcessor || !id){
-            this.curProcessor = false
-            document.getElementById("code").innerHTML = ""
-            document.getElementById("debug").innerHTML = ""
+        if (this.mainDevice.id == device.id){
+            this.unhighlightMainDevice()
+            this.mainDevice = false
+            this.displayCode()
+            this.displayVariables()
             return
         }
-        this.curProcessor = id
-        this.highlightProcessor(id)
+        if (this.altDevice.constructor.name == "virtualDevice"){
+            this.selectAltDevice(this.altDevice)
+        }
+        this.mainDevice = device
+        this.highlightMainDevice()
         this.updateBtns()
         this.displayCode()
-        this.displayCurInstruction(core.getDevice("processor",this.curProcessor).curInstrucion)
+        this.displayCurInstruction(device.curInstrucion)
         this.displayVariables()
     }
-    static selectStorage = (id,type) =>{
-        document.getElementById("debug").innerHTML = ""
-        if (this.storageSelected !== false){
-            core.getDevice(this.storageType,this.storageSelected).btn.classList.remove("selected2")
-        }
-        if (id == this.storageSelected && type == this.storageType || !id){
-            this.storageType = false
-            this.storageSelected = false
-            if (this.curProcessor){
-                this.displayVariables()
+    static selectAltDevice = (device) =>{
+        if (device.constructor.name == "virtualDevice"){
+            if (this.mainDevice){
+                this.selectMainDevice(this.mainDevice)
+                this.mainDevice = false
             }
-            return
+            if (this.altDevice.id == device.id && this.altDevice.name == device.name){
+                this.unhighlightAltDevice()
+                document.getElementById("debug").innerHTML = ""
+                document.getElementById("code").innerHTML = ""
+                this.altDevice = false
+                return
+            }
+            if (this.altDevice){
+                this.selectAltDevice(this.altDevice)
+                this.altDevice = false
+            }
+            this.altDevice = device
+            this.highlightAltDevice()
+            document.getElementById("debug").innerHTML = ""
+            this.displayProperties()
+        }else{
+            document.getElementById("debug").innerHTML = ""
+            if (this.altDevice){
+                this.unhighlightAltDevice()
+            }
+            if (this.altDevice.constructor.name == "virtualDevice"){
+                document.getElementById("code").innerHTML = ""
+            }
+            if (this.altDevice.id == device.id && device.name == this.altDevice.name || !device){
+                this.altDevice = false
+                if (this.mainDevice){
+                    this.displayVariables()
+                }
+                return
+            }
+            this.altDevice = device
+            this.highlightAltDevice()
+            this.displayAltDevice()
         }
-        core.getDevice(type,id).btn.classList.add("selected2")
-        this.storageSelected = id
-        this.storageType = type
-        this.displayStorageVariables()
     }
-    static selectVirtualDevice = (id,name) =>{
-        if (this.storageSelected){
-            this.storageSelected = false
-            this.storageType = false
-        }
-        if (this.curProcessor){
-            this.unhighlightProcessor(this.curProcessor)
-            this.curProcessor = false
-        }
-        this.virtualDeviceSelected = id
-        this.virtualDeviceName = name
-        this.highlightVirtualDevice(id,name)
-        document.getElementById("debug").innerHTML = ""
-        this.displayProperties()
+    static highlightMainDevice = ()=>{
+        this.mainDevice.btn.classList.add("selected")
     }
-    static highlightProcessor = (id)=>{
-        core.getDevice("processor",id).btn.classList.add("selected")
-    }
-    static unhighlightProcessor = (id)=>{
+    static unhighlightMainDevice = (id)=>{
         document.getElementById("play-pause").src = "resources/play.svg"
-        core.getDevice("processor",id).btn.classList.remove("selected")
+        this.mainDevice.btn.classList.remove("selected")
     }
-    static highlightVirtualDevice = (id,name) =>{
-        core.getDevice(name,id).btn.classList.add("selected2")
+    static highlightAltDevice = () =>{
+        this.altDevice.btn.classList.add("selected2")
     }
-    static unhighlightVirtualDevice = (id,name) =>{
-        core.getDevice(name,id).btn.classList.remove("selected2")
+    static unhighlightAltDevice = () =>{
+        this.altDevice.btn.classList.remove("selected2")
     }
     static updateBtns = () =>{
-        if (this.curProcessor === false) return
-        document.getElementById("play-pause").src = core.getDevice("processor",this.curProcessor).running?"resources/pause.svg":"resources/play.svg"
+        if (this.mainDevice === false) return
+        document.getElementById("play-pause").src = this.mainDevice.running?"resources/pause.svg":"resources/play.svg"
     }
-    static toggleProcessor = () =>{
-        if (this.curProcessor === false) return
-        if (core.getDevice("processor",this.curProcessor).onBreakPoint()){
-            core.getDevice("processor",this.curProcessor).skipBreakPoint = true
+    static toggleMainDevice = () =>{
+        if (this.mainDevice == false) return
+        if (this.mainDevice.onBreakPoint()){
+            this.mainDevice.skipBreakPoint = true
         }
-        let state = !core.getDevice("processor",this.curProcessor).running
-        core.getDevice("processor",this.curProcessor).running = state
+        let state = !this.mainDevice.running
+        this.mainDevice.running = state
         this.updateBtns()
     }
     static toggleBreakPoint = (linenum) =>{
-        return core.getDevice("processor",this.curProcessor).toggleBreakPoint(linenum)
+        return this.mainDevice.toggleBreakPoint(linenum)
     }
     static createLine = (index,text,brekapoint) =>{
         let container = document.createElement("div")
@@ -115,15 +130,16 @@ class editor{
     }
     static displayCode = () =>{
         document.getElementById("code").innerHTML = ""
-        for (let i = 0; i <  core.getDevice("processor",this.curProcessor).instructions.length; i++) {
-            this.createLine(i+1,core.getDevice("processor",this.curProcessor).instructions[i],core.getDevice("processor",this.curProcessor).breakpoints[i])
+        if (!this.mainDevice) return
+        for (let i = 0; i <  this.mainDevice.instructions.length; i++) {
+            this.createLine(i+1,this.mainDevice.instructions[i],this.mainDevice.breakpoints[i])
         }
     }
     static stepInstruction = () =>{
-        if (core.getDevice("processor",this.curProcessor).onBreakPoint()){
-            core.getDevice("processor",this.curProcessor).skipBreakPoint = true
+        if (this.mainDevice.onBreakPoint()){
+            this.mainDevice.skipBreakPoint = true
         }
-        core.getDevice("processor",this.curProcessor).tick()
+        this.mainDevice.tick()
     }
     static createVariable = (name,value) =>{
         const variable = document.createElement("label")
@@ -132,21 +148,19 @@ class editor{
         document.getElementById("debug").appendChild(variable)
     }
     static displayVariables = () =>{
-        if (this.storageSelected || this.editmode){
-            return
-        }
-
-        let variables = core.getDevice("processor",this.curProcessor).variables
+        if (this.altDevice) return
+        document.getElementById("debug").innerHTML = ""
+        if (!this.mainDevice) return
+        let variables = this.mainDevice.variables
         let variables_name = Object.keys(variables)
         let variables_len = variables_name.length
-        document.getElementById("debug").innerHTML = ""
         for (let i = 0; i < variables_len; i++) {
             this.createVariable(variables_name[i],variables[variables_name[i]])
         }
     }
-    static displayStorageVariables = () =>{
+    static displayAltDevice = () =>{
         document.getElementById("debug").innerHTML = ""
-        core.getDevice(this.storageType,this.storageSelected).values.forEach((value,index)=>{
+        this.altDevice.values.forEach((value,index)=>{
             this.createVariable(index,value)
         })
     }
@@ -154,11 +168,11 @@ class editor{
         if (this.curProcessor === false) return
         if (this.editmode) {
             let instructions = document.getElementById("code-input").value.split("\n")
-            core.getDevice("processor",this.curProcessor).instructions = instructions.filter((val)=>{
+            this.mainDevice.instructions = instructions.filter((val)=>{
                 if (val == "") return false
                 return true
             })
-            core.getDevice("processor",this.curProcessor).curInstrucion = 0
+            this.mainDevice.curInstrucion = 0
             document.getElementById("code-input").remove()
             this.displayCode()
             this.editmode = false
@@ -169,7 +183,7 @@ class editor{
         let input = document.createElement("textarea")
         input.className = "code-input"
         input.id = "code-input"
-        core.getDevice("processor",this.curProcessor).instructions.forEach(instruction => {
+        this.mainDevice.instructions.forEach(instruction => {
             input.value += instruction+"\n"
         });
         input.addEventListener("keydown",(e)=>{
@@ -225,9 +239,8 @@ class editor{
     }
     static displayProperties = () =>{
         document.getElementById("code").innerHTML = ""
-        let device = core.getDevice(this.virtualDeviceName,this.virtualDeviceSelected)
-        if (!device) return
-        device.properties.forEach(propertie => {
+        if (!this.altDevice) return
+        this.altDevice.properties.forEach(propertie => {
             this.createPropertie(propertie.name,propertie.value,false)
         });
     }

@@ -27,7 +27,7 @@ class Processor extends device {
         container.appendChild(img)
         document.getElementById("devices").appendChild(container)
         container.addEventListener("click", (e) => {
-            editor.selectProcessor(this.id)
+            editor.selectMainDevice(this)
         })
         container.addEventListener("contextmenu",(e)=>{
             //To be improved!

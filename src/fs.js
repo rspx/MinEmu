@@ -19,6 +19,9 @@ class fs{
                     p.speed = device.speed?device.speed:1000/120
                     p.running = device.running
                     p.breakpoints = device.breakpoints?device.breakpoints:[]
+                    if (device.id == settings.mainDevice){
+                        editor.selectMainDevice(p)
+                    }
                     break
                 case "display":
                     new Display(device.size,device.id)
@@ -43,9 +46,10 @@ class fs{
                     console.warn("Trying to load unknown device ",device)
                     break
             }
+            if (device.name == settings.altDeviceName && device.id == settings.altDevice){
+                editor.selectAltDevice(core.getDevice(device.name,device.id))
+            }
         });
-        editor.selectStorage(settings.storcoageSelected,settings.storageType) 
-        editor.selectProcessor(settings.curProcessor)
         core.startThread()
         this.loaded = true
     }
@@ -54,9 +58,9 @@ class fs{
             return
         }
         let settings = {
-            "storageSelected":editor.storageSelected,
-            "storageType":editor.storageType,
-            "curProcessor":editor.curProcessor,
+            "altDevice":editor.altDevice.id,
+            "altDeviceName":editor.altDevice.name,
+            "mainDevice":editor.mainDevice.id,
             "bls":core.noBorder
         }
         let devices = []

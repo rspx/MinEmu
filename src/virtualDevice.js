@@ -25,7 +25,7 @@ class virtualDevice extends device {
         
         document.getElementById("devices").appendChild(container)
         container.addEventListener("click", (e) => {
-           editor.selectVirtualDevice(this.id,this.name)
+           editor.selectAltDevice(this)
         })
         container.addEventListener("contextmenu",(e)=>{
             //To be improved!

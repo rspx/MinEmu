@@ -24,7 +24,7 @@ class storage {
         container.appendChild(img)
         document.getElementById("devices").appendChild(container)
         container.addEventListener("click", (e) => {
-           editor.selectStorage(this.id,this.type)
+           editor.selectAltDevice(this)
         })
         container.addEventListener("contextmenu",(e)=>{
            //To be improved!

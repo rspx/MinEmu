@@ -49,7 +49,7 @@ class InstructionHandler{
     }
     static set = (args,processor) =>{
         processor.variables[args[0]] = parseArgument(args[1],processor)
-        editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
+        editor.mainDevice.id == processor.id && !editor.editmode && editor.displayVariables()
     }
     static drawflush = (args,processor) =>{
         let display = parseArgument(args[0],processor)
@@ -82,10 +82,14 @@ class InstructionHandler{
     }
     static write = (args,processor) =>{
         //write input cell1 adress
-        try{
-            parseArgument(args[1],processor).write(parseArgument(args[2],processor),parseArgument(args[0],processor))
-        }catch{
+        let storage = parseArgument(args[1],processor)
+        if (!storage){
             logger.warn(`Trying to write to unexisting memcell or membank @ processors${processor.id} instruction ${processor.curInstrucion}`)
+            return
+        }
+        storage.write(parseArgument(args[2],processor),parseArgument(args[0],processor))
+        if (storage.id == editor.altDevice.id && storage.constructor.name == editor.altDevice.constructor.name){
+            editor.displayAltDevice()
         }
     }
     static read = (args,processor) =>{
@@ -95,6 +99,7 @@ class InstructionHandler{
         }catch{
             logger.warn(`Trying to read to unexisting memcell or membank @ processors${processor.id} instruction ${processor.curInstrucion}`)
         }
+        editor.mainDevice.id == processor.id && !editor.editmode && editor.displayVariables()
     }
     static sensor = (args,processor) =>{
         //sensor result target property
@@ -104,7 +109,7 @@ class InstructionHandler{
             logger.warn(`Trying to get ${args[2]} of unexisting ${args[1]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
             processor.variables[args[0]] = null
         }
-        editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
+        editor.mainDevice.id == processor.id && !editor.editmode && editor.displayVariables()
     }
     static control = (args,processor) => {
         //control enabled target value 0 0 0
@@ -274,6 +279,6 @@ class InstructionHandler{
                 logger.warn(`Unrecognized op operator "${args[0]}" @ processors${processor.id} instruction ${processor.curInstrucion}`)
                 break
         }
-        editor.curProcessor == processor.id && !editor.editmode && editor.displayVariables()
+        editor.mainDevice.id == processor.id && !editor.editmode && editor.displayVariables()
     }
 }
