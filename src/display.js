@@ -43,24 +43,26 @@ class Display{
         case "clear":
           let color = new Color(command[1],command[2],command[3],command[4])
           this.ctx.beginPath()
-          this.ctx.strokeStyle = color.toRgb()
-          this.ctx.fillStyle = color.toRgb()
+          this.ctx.strokeStyle = color.toRgba()
+          this.ctx.fillStyle = color.toRgba()
           this.ctx.fillRect(0,0,this.displaysize,this.displaysize)
           this.ctx.closePath()
+          break
         case "rect":
           this.ctx.beginPath();
-          this.ctx.strokeStyle = this.color.toRgb()
-          this.ctx.fillStyle = this.color.toRgb()
+          this.ctx.strokeStyle = this.color.toRgba()
+          this.ctx.fillStyle = this.color.toRgba()
           this.ctx.fillRect(command[1], command[2], command[3], command[4]);
           this.ctx.closePath();
           break
         case "line":
           this.ctx.beginPath()
-          this.ctx.strokeStyle = this.color.toRgb()
+          this.ctx.strokeStyle = this.color.toRgba()
           this.ctx.moveTo(command[1],command[2])
           this.ctx.lineTo(command[3],command[4])
           this.ctx.stroke()
           this.ctx.closePath()
+          break
         default:
           logger.warn("Unknown command "+ command[0])
       }

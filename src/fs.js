@@ -4,6 +4,7 @@ class fs{
         if (!localStorage.getItem("settings") || !localStorage.getItem("devices")) {
             this.save()
             this.loaded = true
+            core.startThread()
             return
         }
         let settings = JSON.parse(localStorage.getItem("settings"))
@@ -46,8 +47,8 @@ class fs{
                     console.warn("Trying to load unknown device ",device)
                     break
             }
-            if (device.name == settings.altDeviceName && device.id == settings.altDevice){
-                editor.selectAltDevice(core.getDevice(device.name,device.id))
+            if (device.type == settings.altDeviceName && device.id == settings.altDevice){
+                editor.selectAltDevice(core.getDevice(device.type,device.id))
             }
         });
         core.startThread()
@@ -59,7 +60,7 @@ class fs{
         }
         let settings = {
             "altDevice":editor.altDevice.id,
-            "altDeviceName":editor.altDevice.name,
+            "altDeviceName":editor.altDevice.constructor.name,
             "mainDevice":editor.mainDevice.id,
             "bls":core.noBorder
         }

@@ -42,7 +42,7 @@ class Processor extends device {
     
     executeInstruction = (instruction,parameters) =>{
         if (instruction == ""){return}
-        editor.curProcessor == this.id && !editor.editmode &&(
+        editor.mainDevice.id == this.id && !editor.editmode &&(
             editor.displayCurInstruction(this.curInstrucion)
         )
             

@@ -4,12 +4,17 @@ class editor{
     static editmode = false
     static prevInstruction = false
     static onBeforDeviceRemoved = (device) =>{
-        if (this.mainDevice.name == device.name && this.mainDevice.id == device.id){
+        if (this.mainDevice.constructor.name == device.constructor.name && this.mainDevice.id == device.id){
             if (this.mainDevice.id == device.id){
                 this.selectMainDevice(device)
             }
         }
-        if (this.altDevice.name == device.name && this.altDevice.id == device.id){
+        if (this.altDevice.constructor.name == "virtualDevice" && this.altDevice.name == device.name && this.altDevice.id == device.id){
+            this.selectAltDevice(device)
+            this.altDevice = false
+            return
+        }
+        if (this.altDevice.constructor.name == device.constructor.name && this.altDevice.id == device.id){
             this.selectAltDevice(device)
             this.altDevice = false
         }
@@ -68,7 +73,7 @@ class editor{
             if (this.altDevice.constructor.name == "virtualDevice"){
                 document.getElementById("code").innerHTML = ""
             }
-            if (this.altDevice.id == device.id && device.name == this.altDevice.name || !device){
+            if (this.altDevice.id == device.id && device.constructor.name == this.altDevice.constructor.name || !device){
                 this.altDevice = false
                 if (this.mainDevice){
                     this.displayVariables()

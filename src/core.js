@@ -31,7 +31,8 @@ class core {
     static stopThread = () =>{
         this.threadRunning = false
     }
-    static startThread = () =>{setZeroTimeout(runFunction)
+    static startThread = () =>{
+        setZeroTimeout(runFunction)
         this.threadRunning = true
     }
     static getDevice = (name,id) =>{
@@ -56,7 +57,15 @@ class core {
         });
         return output
     }
-    static removeDevice(name,id){
+    static #removeProcessor = (id) =>{
+        this.processors = this.processors.filter(proc=>{
+            if (proc.id == id){
+                return false
+            }
+            return true
+        })
+    }
+    static removeDevice = (name,id) => {
         this.devices = this.devices.filter(device=>{
             if (device.constructor.name.toLowerCase() == "virtualDevice" || device.name == name && device.id == id){
                 editor.onBeforDeviceRemoved(device)
@@ -64,6 +73,9 @@ class core {
                 return false
             }
             if (device.constructor.name.toLowerCase() == name && device.id == id){
+                if(device.constructor.name.toLowerCase() == "processor"){
+                    this.#removeProcessor(device.id)
+                }
                 editor.onBeforDeviceRemoved(device)
                 device.btn.remove()
                 return false
