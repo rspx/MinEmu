@@ -10,7 +10,7 @@ class Constants {
         return Math.round(1000/processor.speed)/60
     }
     static counter = (processor) =>{
-        return processor.curInstrucion
+        return processor.curInstrucion+1
     }
     static time = () =>{
         return new Date().getTime()

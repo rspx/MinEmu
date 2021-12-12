@@ -48,6 +48,10 @@ class InstructionHandler{
         processor.curInstrucion = -1
     }
     static set = (args,processor) =>{
+        if (args[0] == "@counter"){
+            processor.curInstrucion = parseArgument(args[1],processor)-1
+            return
+        }
         processor.variables[args[0]] = parseArgument(args[1],processor)
         editor.mainDevice.id == processor.id && !editor.editmode && editor.displayVariables()
     }
@@ -55,6 +59,7 @@ class InstructionHandler{
         let display = parseArgument(args[0],processor)
         if (!display){
             logger.warn(`Trying to send draw commands to non existant display ${args[0]} @ processors${processor.id} instruction ${processor.curInstrucion}`)
+            processor.drawCommands = []
             return
         }
         processor.drawCommands.forEach(cmd=>{
