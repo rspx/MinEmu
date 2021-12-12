@@ -178,9 +178,8 @@ img{
     width: 30px;
     height: 100%;
 }
-.instruction{
+.instruction-text{
     font-family: "Source Code Pro";
-    color: #bbb;
     padding-left: 5px;
     height: 20px;
     display: block;
@@ -189,7 +188,7 @@ img{
 .line-number{
     font-family: "Source Code Pro";
     user-select: none;
-    color: #bbb;
+    color: #858585;
     width: 32px;
     display: block;
     text-align: center;
@@ -200,10 +199,18 @@ img{
 .highlighten{
     background: #101010;
 }
-.variable-text{
-    color: #bbb;
+.highlighten .line-number{
+    color: #c6c6c6;
+}
+.variable-name{
     display: inline-block;
-    margin: 10px;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+.variable-text{
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 20px;
 }
 .code-input{
     font-family: "Source Code Pro";

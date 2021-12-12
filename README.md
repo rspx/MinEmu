@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img  title="An Mindustry Logic Emulator" src="https://i.ibb.co/HpL19Jk/2021-12-03-22-57-52.gif" width="750"> <br />
+  <img  title="An Mindustry Logic Emulator" src="https://i.ibb.co/Ld4zMmg/2021-12-12-17-02-54.gif" width="750"> <br />
   An Mindustry Logic Emulator
 </h1>
 <h4 align="center">
@@ -15,18 +15,17 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 - Support of switches
 - Breakpoints
 - Progress saving
-- Built in editor
+- Built in editor with syntax highlighting
 - Debug info
 - Execution control
-- Processors can run at any speed, even faster than in game use `core.getProcessor(*id*).setSpeed(*speed*)`
+- Custom processor speed
 
 ### FAQ
-- Hover over "+" button to create new processors, displays, etc....
+- Hover over menu button to create new devices
 - Click on processors to open it in the editor
 - Click on memory bank to open it in memory view
 - Right click on any device to delete it
 - Click on the line number to add a breakpoint
-- Create processor with the same id as existing to set the speed without console
 
 ### Suported instructions
 - `print` - full support
@@ -44,4 +43,4 @@ Min emu is open source [Mindustry](https://github.com/Anuken/Mindustry) logic em
 
 ### Showcase
 ![](https://i.ibb.co/bsW2LKR/2021-12-03-23-13-49.gif)
-![](https://i.ibb.co/HT5QKp0/2021-12-03-23-11-29.gif)
+![](https://i.ibb.co/SJBcKXG/2021-12-12-16-56-14.gif)

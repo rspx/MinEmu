@@ -125,12 +125,18 @@ class editor{
         })
         if (brekapoint){
             linenumber.classList.add("breakpoint")
+            false
         }
-        let instruction = document.createElement("label")
-        instruction.className = "instruction"
-        instruction.innerText = text
         container.appendChild(linenumber)
-        container.appendChild(instruction)
+        let data = text.split(" ")
+        for (let i = 0; i<data.length;i++){
+            let label = document.createElement("label")
+            label.className = "instruction-text"
+            label.innerText = data[i]
+            label.style.color = syntaxHighlighter.getColor(data[i])
+            container.appendChild(label)
+        }
+        
         document.getElementById("code").appendChild(container)
     }
     static displayCode = () =>{
@@ -148,9 +154,15 @@ class editor{
     }
     static createVariable = (name,value) =>{
         const variable = document.createElement("label")
-        variable.className = "variable-text"
-        variable.innerHTML = `${name}:${value}`
+        variable.className = "variable-name"
+        variable.style.color = syntaxHighlighter.colors.default
+        variable.innerHTML = name+":"
+        const variabletext = document.createElement("label")
+        variabletext.className = "variable-text"
+        variabletext.style.color = syntaxHighlighter.getColor(String(value))
+        variabletext.innerHTML = value
         document.getElementById("debug").appendChild(variable)
+        document.getElementById("debug").appendChild(variabletext)
     }
     static displayVariables = () =>{
         if (this.altDevice) return
@@ -224,7 +236,7 @@ class editor{
             if (e.keyCode == 13) { e.preventDefault(); }
         };
         textarea.oninput = (e) =>{
-            let device = core.getDevice(this.virtualDeviceName,this.virtualDeviceSelected)
+            let device = core.getDevice(this.altDevice.name,this.altDevice.id)
             if (!device.propertyExists(name)){
                 return
             }
